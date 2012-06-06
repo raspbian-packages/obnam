@@ -1,0 +1,538 @@
+.\" Copyright 2010, 2011  Lars Wirzenius
+.\" 
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\" 
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\" 
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program.  If not, see <http://www.gnu.org/licenses/>.
+.TH OBNAM 1
+.SH NAME
+obnam \- make, restore, and manipulate backups
+.SH SYNOPSIS
+.SH DESCRIPTION
+.B obnam
+makes, restores, manipulates, and otherwise deals with backups.
+It can store backups on a local disk or to a server via sftp.
+Every backup generation looks like a fresh snapshot,
+but is really incremental:
+the user does not need to worry whether it's a full backup or not.
+Only changed data is backed up,
+and if a chunk of data is already backed up in another file,
+that data is re-used.
+.PP
+The place where backed up data is placed is called the
+backup repository.
+A repository may be, for example, a directory on an sftp server,
+or a directory on a USB hard disk.
+A single repository may contain backups from several clients.
+Their data will intermingle as if they were using separate repositories,
+but if one client backs up a file, the others may re-use the data.
+.PP
+.B obnam 
+command line syntax consists of a 
+.I command
+possibly followed by arguments.
+The commands are list below.
+.IP \(bu
+.B backup
+makes a new backup.
+The first time it is run, it makes a full backup,
+after that an incremental one.
+.IP \(bu
+.B restore
+is the opposite of a backup.
+It copies backed up data from the backup repository to a target directory.
+You can restore everything in a generation,
+or just selected files.
+.IP \(bu
+.B clients
+lists the clients that are backed up to the repository.
+.IP \(bu
+.B generations
+lists every backup generation for a given client, 
+plus some metadata about the generation.
+.IP \(bu
+.B genids
+lists the identifier for every backup generation for a given client.
+No other information is shown.
+This can be useful for scripting.
+.IP \(bu
+.B ls
+lists the contents of a given generation, similar to 
+.BR "ls \-lAR" .
+.IP \(bu
+.B verify
+compares data in the backup with actual user data,
+and makes sures they are identical.
+It is most useful to run immediately after a backup,
+to check that it actually worked.
+It can be run at any time,
+but if the user data has changed,
+verification fails even though the backup is OK.
+.IP \(bu
+.B forget
+removes backup generations that are no longer wanted,
+so that they don't use disk space.
+Note that after a backup generation is removed
+the data can't be restored anymore.
+You can either specify the generations to remove by listing them
+on the command line,
+or use the
+.B \-\-keep
+option to specify a policy for what to keep (everything else will
+be removed).
+.IP \(bu
+.B fsck
+checks the internal consistency of the backup repository.
+It verifies that all clients, generations, directories, files, and
+all file contents still exists in the backup repository.
+It may take quite a long time to run.
+.IP \(bu
+.B force\-lock
+removes a lock file for a client in the repository.
+You should only force a lock if you are sure no-one is accessing that
+client's data in the repository.
+A dangling lock might happen, for example, if obnam loses its network
+connection to the backup repository.
+.IP \(bu
+.B client\-keys
+lists the encryption key associated with each client.
+.IP \(bu
+.B list\-keys
+lists the keys that can access the repository,
+and which toplevel directories each key can access.
+Some of the toplevel directories are shared between clients,
+others are specific to a client.
+.IP \(bu
+.B list\-toplevels
+is like 
+.BR list\-keys ,
+but lists toplevels and which keys can access them.
+.IP \(bu
+.B add\-key
+adds an encryption key to the repository.
+By default, the key is added only to the shared toplevel directories,
+but it can also be added to specific clients:
+list the names of the clients on the command line.
+They key is given with the
+.B \-\-keyid
+option.
+Whoever has access to the secret key corresponding to the key id
+can access the backup repository
+(the shared toplevels plus specified clients).
+.IP \(bu
+.B remove\-key
+removes a key from the shared toplevel directories,
+plus any clients specified on the command line.
+.IP \(bu
+.B nagios\-last\-backup\-age
+is a check that exits with non-zero return if a backup age exceeds a certain
+threshold.  It is suitable for use as a check plugin for nagios.  Thresholds
+can be given the
+.B \-\-warn-age
+and
+.B \-\-critical-age
+options.
+.SS "Making backups"
+When you run a backup,
+.B obnam
+uploads data into the backup repository.
+The data is divided into chunks,
+and if a chunk already exists in the backup repository,
+it is not uploaded again.
+This allows 
+.B obnam
+to deal with files that have been changed or renamed since the previous
+backup run.
+It also allows several backup clients to avoid uploading the same data.
+If, for example, everyone in the office has a copy of the same sales brochures,
+only one copy needs to be stored in the backup repository.
+.PP
+Every backup run is a 
+.IR generation .
+In addition,
+.B obnam
+will make 
+.I checkpoint
+generations every now and then.
+These are exactly like normal generations,
+but are not guaranteed to be a complete snapshot of the live data.
+If the backup run needs to be aborted in the middle,
+the next backup run can continue from the latest checkpoint,
+avoiding the need to start completely over.
+.PP
+If one backup run drops a backup root directory,
+the older generations will still keep it:
+nothing changes in the old generations just because there is a new one.
+If the root was dropped by mistake,
+it can be added back and the next backup run will re-use the existing
+data in the backup repository,
+and will only back up the file metadata (filenames, permissions, etc).
+.SS "Verifying backups"
+What good is a backup system you cannot rely on?
+How can you rely on something you cannot test?
+The
+.B "obnam verify"
+command checks that data in the backup repository matches actual user data.
+It retrieves one or more files from the repository and compares them to
+the user data.
+This is essentialy the same as doing a restore,
+then comparing restored files with the original files using 
+.BR cmp (1),
+but easier to use.
+.PP
+By default verification happens on all files.
+You can also specify the files to be verified by listing them on the
+command line.
+You should specify the full paths to the files,
+not relative to the current directory.
+.PP
+The output lists files that fail verification for some reason.
+If you verify everything, it is likely that some files (e.g.,
+parent directories of backup root) may have changed without it
+being a problem.
+Note that you will need to specify the whole path to the files
+or directories to be verified, not relative to the backup root.
+You still need to specify at least one of the backup roots 
+on the command line or via the
+.B \-\-root
+option so that obnam will find the filesystem, in case it is
+a remote one.
+.SS "URL syntax"
+Whenever obnam accepts a URL, it can be either a local pathname,
+or an 
+.B sftp
+URL.
+An sftp URL has the following form:
+.IP
+.R \fBsftp://\fR[\fIuser\fR@]\fIdomain\fR[:\fIport\fR]\fB/path
+.PP
+where 
+.I domain
+is a normal Internetl domain name for a server,
+.I user
+is your username on that server,
+.I port
+is an optional port number,
+and
+.I path
+is a pathname on the server side.
+Like
+.BR bzr (1),
+but unlike the sftp URL standard,
+the pathname is absolute,
+unless it starts with
+.B /~/
+in which case it is relative to the user's home directory on the server.
+.PP
+See the EXAMPLES section for examples of URLs.
+.PP
+You can use
+.B sftp
+URLs for the repository, or the live data (root),
+but note that due to limitations in the protocol,
+and its implementation in the 
+.B paramiko
+library,
+some things will not work very well for accessing live data over
+.BR sftp .
+Most importantly,
+the handling of of hardlinks is rather suboptimal.
+For live data access, you should not end the URL with
+.B /~/
+and should append a dot at the end in this special case.
+.SS "Generation specifications"
+When not using the latest generation,
+you will need to specify which one you need.
+This will be done with the
+.B \-\-generation
+option,
+which takes a generation specification as its argument.
+The specification is either the word
+.IR latest ,
+meaning the latest generation (also the default),
+or a number.
+See the
+.B generations
+command to see what generations are available,
+and what their numbers are.
+.SS "Policy for keeping and removing backup generations"
+The
+.B forget
+command can follow a policy to automatically keep some and remove
+other backup generations.
+The policy is set with the
+.BR \-\-keep =\fIPOLICY
+option.
+.PP
+.I POLICY
+is comma-separated list of rules.
+Each rule consists of a count and a time period.
+The time periods are 
+.BR h ,
+.BR d ,
+.BR w ,
+.BR m ,
+and
+.BR y ,
+for hour, day, week, month, and year.
+.PP
+A policy of
+.I 30d
+means to keep the latest backup for each day when a backup was made,
+and keep the last 30 such backups.
+Any backups in between will be removed,
+as will any backups older than the oldest kept backup.
+.PP
+As an example, assume backups are taken every hour, on the hour:
+at 00:00, 01:00, 02:00, and so on, until 23:00.
+If the
+.B forget
+command is run at 23:15, with the above policy,
+it will keep the backup taken at 23:00 on each day,
+and remove every other backup that day.
+It will also remove backups older than 30 days.
+.PP
+If backups are made every other day, at noon,
+.B forget
+would keep the 30 last backups,
+or 60 days worth of backups,
+with the above policy.
+.PP
+Note that obnam will only inspect timestamps in the backup repository,
+and does not care what the actual current time is.
+This means that if you stop making new backups,
+the existing ones won't be removed automatically.
+In essence, obnam pretends the current time is just after the
+latest backup when 
+.B forget
+is run.
+.PP
+The rules can be given in any order,
+but will be sorted to ascending order of time period before applied.
+(It is an error to give two rules for the same period.)
+A backup generation is kept if it matches any rule.
+.PP
+For example, assume the same backup frequence as above,
+but a policy of
+.IR 30d,52w .
+This will keep the newest daily backup for each day for thirty days,
+.I and
+the newest weekly backup for 52 weeks.
+Because the hourly backups will be removed daily,
+before they have a chance to get saved by a weekly rule,
+the effect is that the 23:00 o'clock backup for each day is
+saved for a month,
+and the 23:00 backup on Sundays is saved for a year.
+.PP
+If no policy is given,
+.B forget
+will keep everything.
+.PP
+A typical policy might be
+.IR 72h,7d,5w,12m ,
+which means: keep
+the last 72 hourly backups,
+the last 7 daily backups,
+the last 5 weekly backups and
+the last 12 monthly backups.
+If the backups are systematically run on an hourly basis,
+this will mean keeping
+hourly backups for three days,
+daily backups for a week,
+weekly backups for a month,
+and monthly backups for a year.
+.PP
+The way the policy works is a bit complicated.
+Run
+.B forget
+with the
+.B \-\-pretend
+option to make sure you're removing the right ones.
+.\"
+.SS "Using encryption"
+.B obnam
+can encrypt all the data it writes to the backup repository.
+It uses 
+.BR gpg (1)
+to do the encryption.
+You need to create a key pair using
+.B "gpg --gen-key"
+(or use an existing one),
+and then tell
+.B obnam
+about it using the
+.B \-\-encrypt\-with
+option.
+.SS "Configuration files"
+.B obnam
+will look for configuration files in a number of locations.
+See the FILES section for a list.
+All files are treated as if they are were one with the contents of all
+files catenated.
+.PP
+The files are in INI format,
+and only the 
+.I [config]
+section is used
+(any other sections are ignored).
+.PP
+The long names of options are used as keys for configuration
+variables.
+Any setting that can be set from the command line can be set in a configuration
+file, in the
+.I [config]
+section.
+.PP
+For example, the options in the following command line:
+.sp 1
+.RS
+obnam --repository=/backups --exclude='\.wav$' backup
+.RE
+.sp 1
+could be replaced with the following configuration file:
+.sp 1
+.nf
+.RS
+[config]
+repository: /backup
+exclude: \.wav$
+.RE
+.fi
+.sp 1
+(You can use either 
+.I foo=value
+or
+.I foo: value
+syntax in the files.)
+.PP
+The only unusual thing about the files is the way options that can be
+used many times are expressed.
+All values are put in a single line,
+separated by commas
+(and optionally spaces as well).
+For example:
+.sp 1
+.RS
+.nf
+[config]
+exclude = foo, bar, \\.mp3$
+.fi
+.RE
+.sp 1
+The above has three values for the
+.B exclude
+option:
+any files that contain the words
+.I foo
+or
+.I bar
+anywhere in the fully qualified pathname,
+or files with names ending with a period and 
+.I mp3
+(because the exclusions are regular expressions).
+.SS "Multiple clients and locking"
+.B obnam
+supports sharing a repository between multiple clients.
+The clients can share the file contents (chunks),
+so that if client A backs up a large file,
+and client B has the same file,
+then B does not need to upload the large file to the repository a second time.
+For this to work without confusion,
+the clients use a simple locking protocol that allows only one client
+at a time to modify the shared data structures.
+Locks do not prevent read-only access at the same time:
+this allows you to restore while someone else is backing up.
+.PP
+Sometimes a read-only operation happens to access a data structure at the
+same time as it is being modified.
+This can result in a crash.
+It will not result in corrupt data,
+or incorrect restores.
+However, you may need to restart the read-only operation after a crash.
+.SS "Repository format conversion"
+The
+.B convert5to6
+subcommand converts a repository of format 5 to format 6.
+It is somewhat dangerous!
+It modifies the repository in place,
+so you should be careful.
+You should do a hardlink copy of the repository before converting:
+.IP
+cp -al repo repo.format5
+.PP
+You should also run this with local filesystem access to the repository,
+rather than sftp,
+to avoid abysmal performance.
+.\"---------------------------------------------------------------------
+.SH OPTIONS
+.\" ------------------------------------------------------------------
+.SH "EXIT STATUS"
+.B obnam
+will exit with zero if everything went well,
+and non-zero otherwise.
+.SH ENVIRONMENT
+.B obnam
+will pass on the environment it gets from its parent,
+without modification.
+It does not obey any unusual environment variables,
+but it does obey the usual ones when running external programs,
+creating temporary files, etc.
+.SH FILES
+.I /etc/obnam.conf
+.br
+.I /etc/obnam/*.conf
+.br
+.I ~/.obnam.conf
+.br
+.I ~/.config/obnam/*.conf
+.RS
+Configuration files for
+.BR obnam .
+It is not an error for any or all of the files to not exist.
+.RE
+.SH EXAMPLE
+To back up your home directory to a server:
+.IP
+.nf
+obnam backup \-\-repository sftp://your.server/~/backups $HOME
+.PP
+To restore your latest backup from the server:
+.IP
+.nf
+obnam restore \-\-repository sftp://your.server/~/backups \\
+\-\-to /var/tmp/my.home.dir
+.PP
+To restore just one file or directory:
+.IP
+.nf
+obnam restore \-\-repository sftp://your.server/~/backups \\
+\-\-to /var/tmp/my.home.dir $HOME/myfile.txt
+.PP
+To check that the backup worked:
+.IP
+.nf
+obnam verify \-\-repository sftp://your.server/~/backups \\
+/path/to/file
+.PP
+To remove old backups, keeping the newest backup for each day for
+ten years:
+.IP
+.nf
+obnam forget \-\-repository sftp://your.server/~/backups \\
+\-\-keep 3650d
+.PP
+To verify that the backup repository is OK:
+.IP
+.nf
+obnam fsck \-\-repository sftp://your.server/~/backups
+.SH "SEE ALSO"
+.TP
+.BR cliapp (5)

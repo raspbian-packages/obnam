@@ -1,0 +1,638 @@
+Obnam NEWS
+==========
+
+
+This file summarizes changes between releases of Obnam.
+
+Version 1.1, released 2012-06-30
+--------------------------------
+
+* Mark the `--small-files-in-btree` settings as deprecated.
+* Obnam now correctly checks that `--repository` is set.
+* Options in `--help` output are now grouped in random senseless ways
+  rather than being in one randomly ordered group.
+* Manual page clarification for `--root` and `verify`. Thanks, Saint Germain.
+* Remove outdated section from manual page explaining that there is not
+  format conversion. Thanks, Elrond of Samba-TNG.
+* Added missing information about specifying a user in sftp URLs. Thanks,
+  Joey Hess, for pointing it out.
+* Manual page clarification on `--keep` from Damien Couroussé.
+* Make `obnam forget` report which generations it would remove without
+  `--pretend`. Thanks, Neal Becker, for the suggestion.
+
+Version 1.0, released 2012-06-01
+--------------------------------
+
+* Fixed bug in finding duplicate files during a backup generation.
+  Thanks to Saint Germain for reporting the problem.
+* Changed version number to 1.0.
+
+Version 0.30, released 2012-05-30; a RELEASE CANDIDATE
+------------------------------------------------------
+
+Only bug fixes, and only in the test suite.
+
+* Fix test case problem when `$TMPDIR` lacks `user_xattr`. The extended
+  attributes test won't succeed in that case, and it's pointless to run it.
+* Fix test case problem when `$TMPDIR` lacks nanosecond timestamps for
+  files. The test case now ignores such timestamps, making the test pass
+  anyway. The timestamp accuracy is not important for this test.
+
+Version 0.29, released 2012-05-27; a RELEASE CANDIDATE
+------------------------------------------------------
+
+* "obnam backup" now writes performance statistics at the end of a backup run.
+  Search the log for "Backup performance statistics" (INFO level).
+* "obnam verify" now continues past the first error. Thanks to Rafał Gwiazda
+  for requesting this.
+* Add an `obnam-viewprof` utility to translate Python profiling output
+  into human readable text form.
+* Bug fix: If a file's extended attributes have changed in any way, the change
+  is now backed up.
+* "obnam fsck" is now a bit faster.
+* The shared directories in the repository are now locked only during updates,
+  allowing more efficient concurrent backups between several computers.
+* Obnam now gives a better error message when a backup root is not a 
+  directory. Thanks to Edward Allcutt for reporting the error
+  (<http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=654211>).
+* The output format of "obnam ls" has changed. It now has one line per
+  file, and includes the full pathname of the file, rather mimicking the
+  output of "ls -lAR". Thanks to Edward Allcutt for the suggestion
+  (<http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=655095>).
+* A few optimizations to sftp speed. Small files are still slow.
+
+Version 0.28, released 2012-05-10; a BETA release
+-------------------------------------------------
+
+* `force-lock` should now remove all locks.
+* Out-of-space errors in the repository now terminate the backup process.
+  Previously, Obnam would continue, ignoring the failure to write. If you
+  make space in the repository and restart Obnam, it will continue from
+  the previous checkpoint.
+* The convert5to6 black box test now works even if run by other people
+  than liw.
+* "obnam backup" now uses a single SFTP connection to the backup repository,
+  rather than opening a new one after each checkpoint generation. Thanks to
+  weinzwang for reporting the problem.
+* "obnam verify" now obeys the `--quiet` option.
+* "obnam backup" no longer counts chunks already in the repository in the
+  uploaded amount of data.
+
+Version 0.27, released 2012-04-30; a BETA release
+-------------------------------------------------
+
+* The repository format has again changed in an incompatible manner,
+  so you will need to re-backup everything again. Alternatively, you can
+  try the new `convert5to6` subcommand. See the manual page for details.
+  Make sure you have a copy of the repository before converting, the
+  code is new and may be buggy.
+* New option `--small-files-in-btree` enables Obnam to store the contents
+  of small files in the per-client B-tree. This is not the default, at
+  least yet, since it's impact on real life performance is unknown, but
+  it should make things go a bit faster for high latency repository
+  connections.
+* Some SFTP related speed optimizations.
+* Data filtering is now strictly stable and priority-ordered, ensuring that
+  compression always happens before encryption etc.
+* Repository metadata is never filtered, so that we can be sure that
+  in future if when we add backwards-compatibility we can detect the format
+  without worrying about any other filtering which might occur.
+* Forcing of locks is now unconditional and across the entire repository.
+* Uses the larch 0.30 read-only mode to fix a bug where opening a B-tree
+  rolls back changes someone else is making, even if we only use the tree
+  to read stuff from.
+* "obnam backup" will now exit with a non-zero exit code if there were
+  any errors during a backup, and the problematic files were skipped.
+  Thanks, Peter Palfrader, for reporting the bug.
+* "obnam forget" is now a bit faster.
+* Hash collisions for filenames are now handled.
+
+Version 0.26, released 2012-03-26; a BETA release
+-------------------------------------------------
+
+* Clients now lock the parts of the backup repository they're using,
+  while making any changes, so that multiple clients can work at the
+  same time without corrupting the repository.
+* Now depends on a larch 0.28, which uses journalling to avoid on-disk
+  inconsistencies and corruption during crashes.
+* Compression and encryption can now be used together.
+
+Version 0.25, released 2012-02-18; a BETA release
+-------------------------------------------------
+
+* Log files are now created with permissions that allow only the owner
+  to read or write them. This fixes a privacy leak.
+* The `nagios-last-backup-age` subcommand is useful for setting up Nagios
+  (or similar systems) to check that backups get run properly. Thanks to
+  Peter Palfrader for the patch.
+* Some clarification on how the forget policy works, prompted by questions
+  from Peter Palfrader.
+* New settings `ssh-known-hosts` (for choosing which file to check for 
+  known host keys), `strict-ssh-host-keys` (for disallowing unknown host
+  keys), and `ssh-key` (for choosing which key file to use for SSH 
+  connections) allow better and safer use of ssh.
+* Checkpoints will now happen even in the middle of files (but between
+  chunks).
+* The `--pretend` option now works for backups as well.
+
+BUG FIXES:
+
+* `obnam ls` now shows the correct timestamps for generations.
+  Thanks, Anders Wirzenius.
+
+Version 0.24.1, released 2011-12-24; a BETA release
+-------------------------------------------------
+
+BUG FIX:
+
+* Fix test case for file timestamps with sub-second resolution. Not all
+  filesystems have that, so the test case has been changed to accept lack
+  of sub-second timestamps.
+
+Version 0.24, released 2011-12-18; a BETA release
+-------------------------------------------------
+
+USER VISIBLE CHANGES
+
+* The way file timestamps (modification and access times) have changed,
+  to fix inaccuracies introduced by the old way. Times are now stored
+  as two integers giving full seconds and nanoseconds past the full
+  second, instead of the weird earlier system that was imposed by Python's
+  use of floating point for the timestamps. This causes the repository
+  format version to be bumped, resulting in a need to start over with an
+  empty repository.
+* Extended file attributes are now backed up from and restored to local
+  filesystems. They are neither backed up, nor restored for live data
+  accessed over SFTP.
+* If the `--exclude` regular expression is wrong, Obnam now gives an
+  error message and then ignores the regexp, rather than crashing.
+* There is now a compression plugin, enabled with `--compress-with=gzip`.
+* De-duplication mode can now be chosen by the user: the new 
+  `--deduplicate` setting can be one of `never` (fast, but uses more space); 
+  `verify` (slow, but handles hash collisions gracefully); and
+  `fatalist` (fast, but lossy, if there is a hash collision). `fatalist`
+  is the default mode.
+* Restores now obey the `--dry-run` option. Thanks to Peter Palfreder for
+  the bug report.
+* New option `--verify-randomly` allows you to check only a part of the
+  backup, instead of everything.
+* Verify now has some progress reporting.
+* Forget is now much faster.
+* Forget now has progress reporting. It is not fast enough to do without,
+  sorry.
+* Backup now removes any checkpoint generations it created during a backup
+  run, if it succeeds without errors.
+
+BUG FIXES:
+
+* Now works with a repository on sshfs. Thanks to Dafydd Harries for
+  reporting the problem.
+* Now depends on a newer version of the larch library, fixing a problem
+  when the Obnam default node size changes and an existing repository
+  has a different size.
+* User and group names for sftp live data are no longer queried from the
+  local system. Instead, they're marked as unknown.
+
+Version 0.23, released 2011-10-02; a BETA release
+-------------------------------------------------
+
+USER VISIBLE CHANGES:
+
+* `restore` now shows a progress bar.
+* `fsck` now has more useful progress reporting, and does more checking,
+  including the integrity of the contents of file content.
+* `fsck` now also checks the integrity of the B-trees in the repository,
+  so that it is not necessary to run `fsck-larch` manually anymore. This
+  works remotely as well, whereas `fsck-larch` only worked on B-trees
+  on the local filesystem.
+* `force-lock` now gives a warning if the client does not exist in the
+  repository.
+* Subcommands for encryption now give a warning if encryption key is not
+  given.
+* The `--fsck-fix` option will now instruct `obnam fsck` to try to fix
+  problems found. For this release, it only means fixing B-tree missing
+  node problems, but more will follow.
+* The default sizes have been changed for B-tree nodes (256 KiB) 
+  and file contents chunks (1 MiB), based on benchmarking. 
+* SFTP protocol use has been optimized, which should result in some
+  more speed. This also highlights the need to change obnam so it can
+  do uploads in the background.
+* If a client does not exist in the repository, `force-lock` now gives
+  a warning to the user, rather than ignoring it silently.
+
+DEVELOPER CHANGES:
+
+* New `--sftp-delay=100` option can be used to simulate SFTP backups over
+  networks with long round trip times.
+* `obnam-benchmark` can now use `--sftp-delay` and other changes to make
+  it more useful.
+
+INTERNAL CHANGES:
+
+* Got rid of terminal status plugin. Now, the `Application` class provides
+  a `ttystatus.TerminalStatus` instance instead, in the `ts` attribute.
+  Other plugings are supposed to use that for progress reporting and
+  messaging to the user.
+* The `posix_fadvise` system call is used only if available. This should
+  improve Obnam's portability a bit.
+
+Version 0.22, released 2011-08-25; a BETA release
+-------------------------------------------------
+
+USER VISIBLE CHANGES:
+
+* Obnam now reports its current configuration in the log file at startup.
+  This will hopefully remove one round of "did you use the --foo option?"
+  questions between developers and bug reporters.
+
+BUG FIXES:
+
+* The repository is now unlocked on exit only if it is still locked.
+* A wrongly caught `GeneratorExit` is now dealt with properly.
+* Keyboard interrupts are logged, so they don't show up as anonymous errors.
+
+CHANGES RELEVANT TO DEVELOPERS ONLY:
+
+* `setup.py` has been enhanced to work more like the old `Makefile` did:
+  `clean` removes more artifacts. Instructions in `README` have been updated
+  to point at `setup.py`.
+* Compiler warning about `_XOPEN_SOURCE` re-definition fixed.
+* Tests are now again run during a Debian package build.
+
+Version 0.21, released 2011-08-23; a BETA release
+-------------------------------------------------
+
+USER VISIBLE CHANGES:
+
+* Obnam will now unlock the repository if there's an error during a backup.
+  For the most part, the `force-lock` operation should now be unnecessary,
+  but it's still there in case it's useful some day.
+
+BUG FIXES:
+
+* Negative timestamps for files now work. Thanks to Jamil Djadala
+  for reporting the bug.
+* The documentation for --checkpoint units fixed. Thanks, user weinzwang
+  from IRC.
+* The connections to the repository and live data filesystem are now
+  properly closed. This makes benchmark read/write statistics be correct.
+
+Version 0.20.1, released 2011-08-11; a BETA release
+-------------------------------------------------
+
+BUG FIXES:
+
+* More cases of Unicode strings versus plain strings in filenames
+  over SFTP fixed. Thanks to Tapani Tarvainen.
+
+Version 0.20, released 2011-08-09; a BETA release
+-------------------------------------------------
+
+BUG FIXES:
+
+* Non-ASCII filenames over SFTP root now work. (Thanks, Tapani Tarvainen,
+  for the reproducible bug report.)
+* The count of files while making a backup now counts all files found,
+  not just those backed up. The old behavior was confusing people.
+
+USER VISIBLE CHANGES:
+
+* The output of `obnam ls` now formats the columns a little prettier,
+  so that wide values do not cause misalignment.
+* The error message when trying to use an encrypted repository without
+  encryption is now better (and suggests missing encryption being the
+  reason). Thanks, chrysn.
+* Obnam now supports backing up of Unix sockets.
+
+Version 0.19, released 2011-08-03; a BETA release
+-------------------------------------------------
+
+INCOMPATIBILITY CHANGES:
+
+* We now require version 0.21 of the `larch` library, and this requires
+  bumping the repository format. This means old backup repositories can't
+  be used with this version, and you need to back up everything again.
+  (Please tell me when this becomes a problem.)
+
+BUG FIXES:
+
+* Found one more place where a file going missing during a backup may
+  cause a crash.
+* Typo in error message about on-disk formats fixed.
+  (Thanks, Tapani Tarvainen.)
+* The `--trace` option works again.
+* `fcntl.F_SETFL` does not seem to work on file descriptors for files
+  owned by root that are read-only to the user running obnam. Worked
+  around by ignoring any problems with setting the flags.
+* The funnest bug in this release: if no log file was specified with `--log`,
+  the current working directory was excluded from the backup.
+
+USER VISIBLE CHANGES:
+
+* `obnam(1)` manual page now discusses how configuration files are used.
+* The manual page describes problems using sftp to access live data.
+* The documentation for `--no-act` was clarified to say it only works
+  for `forget. (Thanks, Daniel Silverstone.)
+* `obnam-benchmark` now has a manual page.
+* The backup plugin logs files it excludes, so the user can find out what's
+  going on. A confused user is an unhappy user.
+
+INTERNAL STUFF:
+
+* Tracing statements added to various parts of the code, to help debug
+  mysterious problems.
+* All exceptions are derived from `obnamlib.AppException` or
+  `obnamlib.Error`, and those are derived from `cliapp.AppException`,
+  so that the user gets nicer error messages than Python stack traces.
+* `blackboxtests` is no longer run under fakeroot, because Debian packages
+  are built under fakeroot, and fakeroot within fakeroot causes trouble.
+  However, the point of running tests under fakeroot was to make sure
+  certain kinds of bugs are caught, and since Debian package building runs
+  the tests anyway, the test coverage is not actually diminished.
+* The `Makefile` has new targets `fast-check` and `network-tests`. The
+  latter runs tests over sftp to localhost.
+
+Version 0.18, released 2011-07-20; a BETA release
+-------------------------------------------------
+
+* The repository format has again changed in an incompatible manner,
+  so you will need to re-backup everything again. (If this is a problem,
+  tell me, and I'll consider adding backwards compatibility before 1.0
+  is released.)
+* New option `--exclude-caches` allows automatic exclusion of cache
+  directories that are marked as such.
+* Obnam now makes files in the repository be read-only, so that they're
+  that much harder to delete by mistake.
+* Error message about files that can't be backed up now mentions the
+  correct file.
+* Bugfix: unreadable files and directories no longer cause the backup
+  to fail. The problems are reported, but the backup continues.
+  Thanks to Jeff Epler for reporting the bug.
+* Speed improvement from Jeff Epler for excluding files from backups.
+* Various other speed improvements.
+* Bugfix: restoring symlinks now works even if the symlink is restored
+  before its target. Also, the permissions of the symlink (rather than its
+  target) are now restored correctly. Thanks to Jeff Epler for an 
+  exemplary bug report.
+* New option `--one-file-system`, from Jeff Epler.
+* New benchmarking tool `obnam-benchmark`, which is more flexible than
+  the old `run-benchmark`.
+* When encrypting/decrypting data with GnuPG, temporary files are no
+  longer used.
+* When verifying, `.../foo` and `.../foo/` now work the same way.
+* New option `--symmetric-key-bits`.
+* The chunk directory uses more hierarchy levels, and the way chunks
+  are stored there is now user-configurable (but you'll get into trouble
+  if you don't always use the same configuration). This should speed
+  things up a bit once the number of chunks grows very large.
+* New `--chunkids-per-group` option, for yet more knobs to tweak when
+  searching for optimal performance.
+* Local files are now opened using `O_NOATIME` so they can be backed
+  up without affecting timestamps.
+* Now uses the `cliapp` framework for writing command line applications.
+  The primary user-visible effect is that the manpage now has an
+  accurate list of options.
+* Bugfix: Obnam now again reports VFS I/O statistics.
+* Bugfix: Obnam can again back up live data that is accessed using sftp.
+  Thanks to Tapani Tarvainen for reporting the problem.
+
+Version 0.17, released 2011-05-21; a BETA release
+-------------------------------------------------
+
+* This is the second BETA release.
+* The `run-benchmark` script now works with the new version of `seivot`.
+  The only benchmark size is one gibibyte, for now, because Obnam's too
+  slow to do big ones in reasonable time. As an aside, the benchmark
+  script got rewritten in Python, so it can be made more flexible.
+* Benchmarks are run using encrypted backups.
+* The kernel buffer cache is dropped before each obnam run, so the
+  benchmark result is more realistic (read: slower).
+* Obnam now rotates its logs. See `--log-max` and `--log-keep` options
+  in the manual page. The default location for the log file is now
+  `~/.cache/obnam/obnam.log` for people, and
+  `/var/log/obnam.log` for root.
+* Obnam now restores sparse files correctly.
+* There have been some speed improvements to Obnam.
+* The `--repository` option now has the shorter alias `-r`, since it
+  gets used so often.
+* `obnam force-lock` now merely gives an error message, instead of a
+  Python stack trace, if the repository does not exist.
+* Obnam now does not crash if files go missing during a backup, or can't
+  be read, or there are other problems with them. It will report the
+  problem, but then continue as if it had never heard of the file.
+* Obnam now supports FIFO files.
+* Obnam now verifies checksums when it restores files.
+* Obnam now stores the checksum for the whole file, not just the checksum
+  for each chunk of its contents.
+* Obnam's own log file is automatically excluded from backups.
+* Obnam now stores and restores file timestamps to full accuracy,
+  instead of truncating them to whole seconds.
+* The format of the backup repository has changed in an incompatible way,
+  and Obnam will now refuse to use an old repository. This means you
+  will need to use an old version to restore from them, and need to
+  re-backup everything. Sorry.
+
+Version 0.16, released 2011-07-17; a BETA release
+-------------------------------------------------
+
+* This is the first BETA release. Obnam should now be feature complete
+  for real use. Performance is lacking and there are many bugs remaining.
+  There are no known bugs that would corrupt backed up data, or prevent
+  its recovery.
+* Add encryption support. See the manual page for how to use it.
+
+Version 0.15.1, released 2011-03-21; an ALPHA release
+----------------------------------------------------
+
+* Fix `setup.py` to not import `obnamlib`, so it works when building under
+  pbuilder on Debian. Meh.
+
+Version 0.15, released 2011-03-21; an ALPHA release
+----------------------------------------------------
+
+Bugs fixed:
+
+* Manual page GPL copyright blurb is now properly marked up as a comment.
+  (Thanks, Joey Hess.)
+* README now links to python-lru correctly. (Thanks, Erik Johansson.)
+
+Improvements and other changes:
+
+* Filenames and directories are backed up in sorted order. This should
+  make it easier to know how far obnam's gotten.
+* The location where backups are stored is now called the repository,
+  instead of the store. Suggested by Joey Hess.
+* The repository and the target directory for restored data are now
+  both created by Obnam, if they don't already exist. Suggested by
+  Joey Hess.
+* Better control of logging, using the new `--trace` option.
+* Manual page now explains making backups a little better.
+* Default value for `--lru-size` reduced to 500, for great improvement
+  in memory used, without, it seems, much decrease in speed.
+* `obnam verify` now reports success explicitly. Based on question 
+  from Joey Hess.
+* `obnam verify` now accepts both non-option arguments and the `--root`
+  option. Suggested by Joey Hess.
+* `obnam forget` now accepts "generation specifiers", not just numeric
+  generation ids. This means that `obnam forget latest` works.
+* I/O statistics are logged more systematically.
+* `obnam force-lock` introduced, to allow breaking a lock left behind
+  if obnam crashes. But it never does, of course. (Well, except if there's
+  a bug, like when a file changes at the wrong moment.)
+* `obnam genids` introduced, to list generation ids without any other data.
+  The old command `obnam generations` still works, and lists other info
+  about each generation as well, but that's sometimes bad for scripting.
+* The `--dump-memory-profile` option now accepts the value `simple`, for
+  reporting basic memory use. It has such a small impact that it's the
+  default.
+* Obnam now stores the version of the on-disk format in the repository.
+  This should allow it to handle repositories created by a different
+  version and act suitably (hopefully without wiping all your backups).
+
+Version 0.14, released 2010-12-29; an ALPHA release
+----------------------------------------------------
+
+This version is capable of backing up my laptop's home directory.
+It is, however, still an ALPHA release, and you should not rely on
+it as your sole form of backup. It is also slow. But if you're 
+curious, now would be a good time to try it out a bit.
+
+Bug fixes:
+
+* `COPYING` now contains GPL version 3, instead of 2. The code was
+  licensed under version 3 already. (Thank you Greg Grossmeier.)
+* The manual page now uses `-` and `\-` correctly.
+* `obnam forget` now actually removes data that is no longer used by
+  any generation.
+* When backing up a new generation, if any of the root directories for
+  the backup got dropped by the user, they are now also removed from
+  the backup generation. Old generations obviously still have them.
+* Only the per-client B-tree forest should have multiple trees. Now this
+  actually happens, whereas previously sometimes a very large number of 
+  new trees would be created in some forests. (What's good for rain 
+  forests is not good for saving disk space.)
+* When recursing through directory trees, obnam no longer follows 
+  symlinks to directories.
+* obnam no longer creates a missing backup store when backing up to
+  a local disk. It never did this when backing up via sftp. (This
+  saves me from figuring out which of `store`, `stor`, and `sorte`
+  is the real directory.)
+
+New features and stuff:
+
+* `blackboxtest` has been rewritten to use Python's `unittest`
+  framework, rather than a homegrown bad re-implementation of some of it.
+* `obnam ls` interprets arguments as "genspecs" rather than generation
+  identifiers. This means `obnam ls latest` works, and now `latest` is
+  also the default if you don't give any spec.
+* `run-benchmarks` now outputs results into a git checkout of
+  <http://braawi.org/>, an ikiwiki instance hosted by
+  <http://www.branchable.com/>. The script also puts the results into
+  a suitable sub-directory, adds a page for the RSS feed of benchmark
+  results, and updates the report page that summarizes all stored results.
+* There is now a 100 GiB benchmark.
+* Clients are now called clients, instead of hosts. This terminology should
+  be clearer.
+* The list of clients now stores a random integer identifier for each client
+  (unique within the store). The identifier is used as the name of the
+  per-client B-tree directory, rather than the hostname of the client.
+  This should prevent a teeny tiny bit of information leakage. It also
+  makes debugging things much harder.
+* Various refactorings and prettifications of the code has happened.
+  For example, several classes have been split off from the `store.py` 
+  module. This has also resulted in much better test coverage for those
+  classes.
+* The per-client trees (formerly GenerationStore, now ClientMetadataTree)
+  have a more complicated key now: 4 parts, not 3. This makes it easier
+  to keep separate data about files, and other data that needs to be
+  stored per-generation, such as what the generation id is.
+* `find-duplicate-chunks`, a tool for finding duplicate chunks of data
+  in a files in a directory tree, was added to the tree. I have used it
+  to find out if is worthwhile to do duplicate chunk removal at all.
+  (It is, at least for my data.) Also, it can be used to find good
+  values for chunk sizes for duplicate detection.
+* The whole way in which obnam does de-duplication got re-designed and
+  re-implemented. This is tricky stuff, when there is more than one client.
+* `SftpFS` now uses a hack copied from bzrlib, to use openssh if it is
+  available, and paramiko only if it is not. This speeds up sftp data
+  transfers quite a bit. (Where bzrlib supports more than just openssh,
+  we don't, since I have no way to test the other stuff. Patches welcome.)
+* The way lists of chunk ids are stored for files got changed. Now we store
+  several ids per list item, which is faster and also saves some space
+  in the B-tree nodes. Also, it is now possible to append to the list,
+  which means the caller does not need to first gather a list of all ids.
+  Such a list gets quite costly when the file is quite big (e.g., in the
+  terabyte size).
+* New `--dump-memory-profile` option was added to help do memory profiling 
+  with meliae or heapy have been added. (Obnam's memory consumption finally
+  got annoying enough that I did something about it.)
+
+Removed stuff:
+
+* The functional specification was badly outdated, and has been removed.
+  I decided to stop kidding myself that I would keep it up to date.
+* The store design document has been removed from the store tree.
+  The online version at <http://braawi.org/obnam/ondisk/> is the
+  canonical version, and is actually kept up to date.
+* The benchmark specification has likewise been replaced with
+  <http://braawi.org/obnam/benchmarkspec/>.
+
+
+Version 0.13, released 2010-07-13; an ALPHA release
+----------------------------------------------------
+
+* Bug fix: a mistake in 0.12 caused checkpoints to happen after each
+  file after the first checkpoint. Now they happen at the right intervals
+  again.
+* Upload speed is now displayed during backups.
+* Obnam now tells the kernel that it shouldn't cache data it reads or
+  writes. It is not likely that data being backed up is going to be
+  needed again any time soon, so there's no point in caching it.
+  (The posix_fadvise call is used for this.)
+* New --lru-size option sets size of LRU cache for nodes in memory.
+  The obnam default is large enough to suit large backups. This uses more
+  memory, but is faster than btree's small default of 100.
+
+Version 0.12, released 2010-07-11; an ALPHA release
+----------------------------------------------------
+
+* NOTE: This version makes incompatible changes to the way data is stored
+  on-disk. Backups made with older versions are NOT supported. Sorry.
+* The run-benchmark script has dropped some smaller sizes (they're too
+  fast to be interesting), and adds a 10 GiB test size.
+* Various speed optimizations. Most importantly, the way file metadata
+  (results of lstat(2)) are encoded has changed. This is the incompatible
+  change from above. It's much faster now, though.
+* Preliminary support for using SFTP for the backup store added. Hasn't
+  been used much yet, so might well be very buggy.
+
+
+Version 0.11, released 2010-07-05; an ALPHA release
+----------------------------------------------------
+
+* Speed optimizations:
+  - chunk identifiers are now sequential, except for the first one, or
+    when there's a collision
+  - chunks are now stored in a more sensible directory hierarchy (instead
+    of one per directory, on average)
+  - adding files to a directory in the backup store is now faster
+  - only store a file's metadata that if it is changed
+* New --exclude=regexp option to exclude files based on pathnames
+* Obnam now makes checkpoints during backups. If a backup is aborted
+  in the middle and then re-started, it will continue from the latest
+  checkpoint rather than from the beginning of the previous backup run.
+  - New option --checkpoint to set the interval between checkpoints.
+    Defaults to 1 GiB.
+* Options for various B-tree settings. This is mostly useful for finding
+  the optimal set of defaults, but may be useful in other situations for
+  some people.
+  - New options --chunk-group-size, --chunk-size, --node-size,
+    --upload-queue-size.
+* Somewhat better progress reporting during backups.
+
+
+Version 0.10, released 2010-06-29; an ALPHA release
+---------------------------------------------------
+
+* Rewritten from scratch.
+* Old NEWS file entries removed (see bzr if you're interested).

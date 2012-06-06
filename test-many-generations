@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+# Obnam test: backup and verify many generations of data.
+#
+# Copyright 2012  Lars Wirzenius
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+set -x
+
+die()
+{
+    echo "$@" 1>&2
+    exit 1
+}
+
+[ "$#" = 4 ] || die "Bad usage, read source!"
+
+N="$1"
+repourl="$2"
+repopath="$3"
+client="$4"
+root="$(mktemp -d)"
+log="$(mktemp)"
+amount="1k"
+
+conf="$(mktemp)"
+cat <<EOF > "$conf"
+[config]
+client-name = $client
+quiet = yes
+log = $client.log
+trace = obnamlib
+repository = $repourl
+root = $root
+EOF
+
+echo "Configuration:"
+cat "$conf"
+echo
+
+echo "Making backups"
+seq "$N" |
+while read gen
+do
+    genbackupdata --quiet --create="$amount" "$root" --seed="$RANDOM"
+    find "$root" -exec touch --date="1970-01-01 00:00:$gen" '{}' ';'
+    ./verification-test backup "$repopath" "$root" "$conf" \
+        >> "$client-verif.output" 2>&1 || exit 1
+done || exit 1
+
+echo "Verifying results"
+while true
+do
+    ./verification-test verify "$repopath" "$root" "$conf"
+    ret="$?"
+    if [ "$ret" = 0 ]
+    then
+        break
+    elif [ "$ret" != 42 ]
+    then
+        echo "$client failed verification" 1>&2
+        exit 1
+    fi
+done || exit 1
+
+rm -rf "$conf" "$root" "$log"
+
