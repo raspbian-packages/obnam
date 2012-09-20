@@ -3,6 +3,8 @@
 	dh $@ --with=python2 --with-buildsystem=python_distutils
 
 override_dh_auto_test:
+	# fix test permission due to diff not representing permissions
+	chmod 755 tests/encryption-replaces-key.script
 	python setup.py build_ext -i
 	rm -rf build
 	cp -a test-gpghome temp.gpghome
