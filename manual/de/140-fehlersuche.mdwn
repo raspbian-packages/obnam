@@ -1,0 +1,86 @@
+Fehlersuche
+===========
+
+Dieses Kapitel beschreibt, wie Sie Probleme mit Obnam debuggen. Es umfasst
+Dinge wie Log-Dateien, verschiedene Ebenen der Protokollierung und
+
+Ablaufverfolgung und häufige Probleme bei der Benutzung von Obnam. Es 
+erklärt auch, welche Dinge wo in einem Obnam Backup-Repository landen.
+
+Logging einschalten
+-------------------
+
+Obnam kann ein Logfile erstellen, was durch mehrere Optionen gesteuert wird.
+Diese zu kennen kann helfen, die wichtigsten Informationen zu sammeln, wenn
+ein Problem untersucht werden muss.
+
+* `--log=obnam.log` weist Obnam an, wohin geloggt werden soll.
+  Das Logfile ist eine einfache Textdatei.
+* `--log-level=debug` veranlasst Obnam, mit maximalen Details zu loggen.
+  Der Standard-Loglevel `info` lässt die meisten Debug-Informationen weg.
+* `--trace=obnamlib --trace=larch` lässt Obnam zusätzliche Debug-Informationen
+  loggen. Beide Argumente passen auf sämtliche Obnam-Dateinamen
+  und auf die der Larch-Bibliothek, die Obnam benutzt. Diese zusätzlichen
+  Informationen sind für diejenigen interessant, die den Programmcode lesen
+  und verstehen können
+
+Bitte beachten Sie, das diese Einstellungen die Logfiles stark vergrößern
+können (mehrere 10 Megabytes). Die Größe hängt von der Anzahl und Größe
+der Dateien der Live-Daten ab.
+
+Fehlerbericht schreiben
+-----------------------
+
+Wenn Sie ein Problem bei der Benutzung von Obnam feststellen und Sie
+einen Fehlerbericht schreiben möchten (bitte tun Sie das), dann helfen
+folgende Informationen dabei, das Problem einzugrenzen.
+
+* Senden Sie Fehlerberichte an die Mailingliste `obnam-support@obnam.org`.
+  Auf dieser öffentlich archivierten Mailingliste helfen Benutzer anderen
+  Benutzern.
+
+* Beschreiben Sie den Fehler. Was wollten Sie tun, was ist stattdessen
+  passiert?
+
+* Die Versionen von Obnam und Larch, die Sie benutzen und wie Sie sie
+  installiert haben.
+    - Unter Debian führen Sie einfach `dpkg -l obnam python-larch` in einem Terminal
+      aus und schicken die Ausgabe mit.
+
+* Die genaue Befehlszeile, die Sie benutzt haben. Bitte benutzen Sie 
+  die "Kopieren-und-Einfügen"-Funktion, anstatt abzuschreiben: Das Problem könnte
+  verdeckt sein, wenn Sie nicht die exakte Befehlszeile wiedergeben.
+  Außerdem ist Abschreiben langweilig und wir sollten in unserem Leben Langeweile
+  vermeiden.
+
+* Wenn Sie eine Fehlermeldung erhalten, bitte ebenfalls mittels
+  Kopieren-und-Einfügen der Mail hinzufügen.
+
+* Die komplette Konfiguration. Fügen Sie die Ausgabe von
+  `obnam --dump-config` zur eMail hinzu. Sie können die Ausgabe als
+  Anhang an Ihre eMail an `obnam-support` senden.
+  Bitte bedenken Sie, vertrauliche Informationen wie z.B. Datei-
+  oder Maschinen-Namen durch XXXX zu ersetzen.
+
+* Sollten Sie das Problem mit `--log-level=debug`, `--log=obnam.log`,
+  `--trace=obnamlib` und `--trace=larch` reproduzieren können, senden 
+  Sie bitte einen passenden Abschnitt vom Ende des Logfiles. "Passend" 
+  kommt in diesem Fall auf die Situation an; sollten die letzten ca. 200 
+  Zeilen nicht ausreichen, werden wir uns schon melden.
+  Bitte bedenken Sie, vertrauliche Informationen wie z.B. Datei-
+  oder Maschinen-Namen durch XXXX zu ersetzen.
+
+* Die Ausgabe des `env`-Befehls, ausgeführt im gleichen Terminal
+  in dem Sie Obnam ausgeführt haben. (Bitte auch als Anhang).
+
+* Sollte Ihr Fehlerbericht die Geschwindigkeit betreffen, starten Sie
+  Obnam bitte mit profiling und hängen Sie den Profiling-Bericht an.
+  Um Obnam mit profiling zu starten, installieren Sie bitte Python profile
+  (das `python-profiler`-Paket in Debian / Ubuntu), und setzen Sie die
+  Umgebungsvariable `OBNAM_PROFILE` auf den Dateinamen der Ausgabedatei
+  (die Sie dann bitte per eMail senden).
+
+  Beispiel: `OBNAM_PROFILE=obnam.prof obnam backup` startet das Backup
+  mit profiling und schreibt das Ergebnis nach `obnam.prof`.
+
+Danke für Ihre Hilfe beim Verbessern von Obnam.

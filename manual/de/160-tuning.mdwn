@@ -1,0 +1,49 @@
+# Performance-Tuning
+
+In diesem Kapitel werden verschiedene Möglichkeiten zur Optimierung der
+Geschwindigeit in verschiedenen Situationen aufgezeigt.
+Es behandelt verschiedene Optionen welche den Speicherverbrauch und die
+CPU-Belastung betreffen sowie Hinweise wie selbst die "richtigen"
+Einstellungen gefunden werden können.
+
+Für den Anfang lesen Sie bitte <http://obnam.org/faq/tuning/>.
+
+## Running Obnam under the Python profiler
+
+Ein **profiler** ist ein Programm mit dem gemessen werden kann, wie
+andere Programme ihre Zeit verbringen. Das kann nützlich sein, wenn
+herauszufinden ist, warum ein Programm langsam arbeitet.
+
+Obnam kann einfach mittels des Python Profilers ausgeführt werden,
+der natürlich installiert sein muss. Prüfen Sie die Dokumentation Ihres
+Betriebssystems oder Ihrer Python-Installation und herauszufinden, wie
+der Profiler installiert wird.  
+So prüfen Sie, ob der Profiler bereits auf Ihrem System installiert ist:
+
+    python -c 'import cProfile'
+
+Wenn bei diesem Aufruf nichts ausgegeben wird, ist alles OK. Sollten Sie
+eine Fehlermeldung (siehe unten) erhalten, so ist der Profiler nicht
+installiert:
+
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+    ImportError: No module named cProfiler
+
+Wenn Sie den Profiler installiert haben, können Sie Obnam wie folgt starten:
+
+    OBNAM_PROFILE=backup.prof obnam bsckup
+
+So werden die Profiling-Daten in die Daten `backup.prof` geschrieben.
+Sie können das natürlich mit jedem Obnamm so tun und in ein beliebiges Feil schreiben
+
+Die Profiling-Daten werden binär gespeichert. Obnam bringt ein kleines
+Hilfsprogramm mit, welches die Daten in menschen-lesbare Form umwandelt:
+
+    obnam-viewprof backup.prof | less
+
+Wenn Sie dies ausführen, werden Sie sehen: Die Ausgabe nützt nur 
+Programmierern und Zirkusclowns. Wenn Sie die Ausgaben verstehen: Toll!
+Falls nicht, ist es immer noch hilfreich die Daten an die Obnam-
+Entwickler zu senden, wenn Sie ein Problem mit der Geschwindigkeit
+von Obnam haben.

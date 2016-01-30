@@ -1,0 +1,47 @@
+# Performance tuning
+
+This chapter discusses ways to tune Obnam performance for various
+situations. It covers the various options that can affect CPU and
+memory consumption, as well as ways to experiment to find a good set
+of values.
+
+See <http://obnam.org/faq/tuning/> for a start.
+
+
+## Running Obnam under the Python profiler
+
+A **profiler** is a program that measures where another program spends
+its time. This can be very useful for finding out why the other
+program is slow.
+
+Obnam can easily be run under the Python profiler. You need to have
+the profiler installed. Check with your operating system or Python
+installation how to achieve that. To see if you have it installed, run
+the following command on the command line:
+
+    python -c 'import cProfile'
+
+If this outputs nothing, all is well. If it outputs an error such as
+the following, you have not got the profiler installed:
+
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+    ImportError: No module named cProfiler
+
+Once you have the profiler installed, run Obnam like this:
+
+    OBNAM_PROFILE=backup.prof obnam bsckup
+
+This will cause the profiling data to be written to the file
+`backup.prof`. You can do this for any Obnam command, and write it to
+any file.
+
+The profiling data is in binary form. Obnam comes with a little helper
+program to transform it to a human-readable form:
+
+    obnam-viewprof backup.prof | less
+
+If you run the above command, you'll see that the humans to whom this
+is readable are programmers and circus clowns. If you can understand
+the output, great! If not, it's still useful to send that to the Obnam
+developers to report a performance problem.

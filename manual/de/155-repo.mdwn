@@ -1,0 +1,18 @@
+Interna eines Repository
+========================
+
+Dieses Kapitel beschreibt die Interna eines Obnam Repository.
+Überspringen Sie dieses Kapitel, außer wenn Sie sind daran interessiert sind.
+
+Im Moment sehen Sie bitte die Website unter <http://obnam.org/development/> an.
+
+
+Dateiberechtigungen im Repository
+---------------------------------
+
+Obnam setzt die Berechtigungen aller Dateien, die es im Repository anlegt so,
+dass nur der Eigentümer der Dateien sie lesen und schreiben kann.
+(Technisch bedeutet dies: Dateien: 0600, Verzeichnisse 0700.)
+
+Dies dient dazu, Informations-Abfluss zu vermeiden, falls jemand
+Lesezugriff auf das Repository hätte. Dieses Verhalten ist nicht konfigurierbar.
