@@ -1,0 +1,494 @@
+obnam (1.19.1-1+rpi1) stretch-staging; urgency=medium
+
+  [changes brought forward from 1.8-1+rpi1 by Peter Michael Green <plugwash@raspbian.org> at Sun, 29 Mar 2015 12:27:28 +0000]
+  * Disable testsuite.
+
+ -- Raspbian forward porter <root@raspbian.org>  Thu, 11 Feb 2016 23:27:24 +0000
+
+obnam (1.19.1-1) unstable; urgency=medium
+
+  * New upstream version.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 30 Jan 2016 11:07:22 +0200
+
+obnam (1.19-1) unstable; urgency=medium
+
+  * New upstream version
+    * Fix "ignored Broken Pipe exception" (Closes: #679940)
+
+ -- Lars Wirzenius <liw@liw.fi>  Fri, 15 Jan 2016 18:23:05 +0200
+
+obnam (1.18.2-1) unstable; urgency=medium
+
+  * New upstream release. Closes:
+    - "Does not skip directories containing a CACHEDIR.TAG file"
+      (Closes: #804375)
+
+ -- Lars Wirzenius <liw@liw.fi>  Sun, 15 Nov 2015 22:12:15 +0200
+
+obnam (1.18.1-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Lars Wirzenius <liw@liw.fi>  Fri, 06 Nov 2015 11:52:58 +0000
+
+obnam (1.18-1) unstable; urgency=medium
+
+  * New upstream version.
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 04 Nov 2015 21:52:25 +0200
+
+obnam (1.17-1) unstable; urgency=medium
+
+  * New upstream version.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 12 Sep 2015 12:40:10 +0300
+
+obnam (1.16-1) unstable; urgency=medium
+
+  * New upstream release.
+    * Fix "NameError: global name 're' is not defined" (Closes: #796950)
+    * Fix "NameError: global name 'netloc' is not defined" (Closes: #796139)
+
+ -- Lars Wirzenius <liw@liw.fi>  Sun, 06 Sep 2015 16:25:28 +0300
+
+obnam (1.15-1) unstable; urgency=medium
+
+  * Fix "obnam backup fails with NameError: global name 'netloc' is not
+    defined" <explain what you changed and why> (Closes: #796139)
+  * New upstream version.
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 19 Aug 2015 21:37:55 +0200
+
+obnam (1.14-1) unstable; urgency=medium
+
+  * New upstream version.
+
+ -- Lars Wirzenius <liw@liw.fi>  Fri, 14 Aug 2015 20:51:41 +0200
+
+obnam (1.13-1) unstable; urgency=medium
+
+  * New upstream version.
+    * Fix "R43272X: Repository doesn't contain chunk" (Closes:
+      #793792)
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 01 Aug 2015 19:24:46 +0300
+
+obnam (1.12-1) unstable; urgency=medium
+
+  * New upstream version.
+  * debian/rules: Added DEB_BUILD_OPTIONS support for nocheck.
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 08 Jul 2015 15:58:31 +0300
+
+obnam (1.11-1) unstable; urgency=medium
+
+  * New upstream version.
+    - Fixes the "import fmt_ga" failure. (Closes: #790845)
+  * Change source package format to 3.0 (quilt).
+
+ -- Lars Wirzenius <liw@liw.fi>  Thu, 02 Jul 2015 17:02:10 +0300
+
+obnam (1.10-1) unstable; urgency=medium
+
+  * New upstream version.
+    * Fix "restore to /tmp messes up directory perms" by preventing
+      restores to a non-empty directory. (Closes: #760492)
+  * Add build-dependency on git.
+  * Drop build-dependency on texlive and building of PDF form of manual.
+    Texlive is an insanely large build dependency.
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 01 Jul 2015 18:14:49 +0300
+
+obnam (1.9-1) unstable; urgency=low
+
+  * Update debian/copyright years. Thanks to Jan Niggemann.
+  * Add build and runtime dependencies on python-yaml, since it is now
+    needed by the "simple" format.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sun, 22 Mar 2015 16:20:31 +0200
+
+obnam (1.8-1) unstable; urgency=low
+
+  * New upstream version.
+    - "obnam excludes files with "syslog" in the name without me
+      specifying it" (Closes: #682667)
+    - "obnam: client not found, but cannot remove lock" (Closes: #675825)
+    - "data leak during restore" (Closes: #745112)
+
+ -- Lars Wirzenius <liw@liw.fi>  Tue, 13 May 2014 08:04:18 +0100
+
+obnam (1.7.4-1) unstable; urgency=low
+
+  * New upstream release.
+    * Fix "several consecutive runs back up unmodified files" 
+      (Closes: #742384)
+    * Fix "obnam mount fails to retrieve files over 64KB (obnam restore
+      works fine)" again. (Closes: #741968)
+  * debian/control: Increase build-dependency on cmdtest to 0.12 so
+    that yarn will not fail when a test creates an unreadable file.
+  * debian/rules: No longer run cmdtests, since they no longer exist.
+  * debian/control: Add build-dependency on texlive-lang-german, for the
+    German translation of the manual.
+
+ -- Lars Wirzenius <liw@liw.fi>  Tue, 01 Apr 2014 11:03:18 +0100
+
+obnam (1.7.2-1) unstable; urgency=low
+
+  * New upstream release.
+    * Fix "obnam mount fails to retrieve files over 64KB (obnam restore
+      works fine)" (Closes: #741968)
+  * Fix "typo in debian/control: s/Uploader/Uploaders/" (Closes: #729347)
+  * Drop dependency on python-yaml, since yaml is no longer used.
+  * Drop python-coverage-test-runner build-dependency to 0.8, which is
+    in Debian. Newer upstream versions have no functional changes, so
+    are not uploaded to Debian. This should allow Debian buildds to
+    build the package.
+  * debian/control: Update format and source URLs.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 22 Mar 2014 13:18:43 +0000
+
+obnam (1.7-1) unstable; urgency=low
+
+  * Add python-yaml as a build and runtime dependency.
+  * New upstream version. Fixes bugs in Debian:
+    - Explain CACHEDIR.TAG with
+      http://www.brynosaurus.com/cachedir/spec.html (Closes: #732317)
+    - "ship an example obnam.conf" (Closes: #678885)
+  * debian/control: Updated build and runtime dependencies to versions
+    in wheezy or my current package versions, as appropriate.
+  * debian/control: Bumped Standards-Version. No changes required.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 15 Mar 2014 17:18:30 +0000
+
+obnam (1.6.1-1) unstable; urgency=low
+
+  * Really fix dependencies on python-larch
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 30 Nov 2013 12:46:30 +0000
+
+obnam (1.6-1) unstable; urgency=low
+
+  * New upstream version.
+    - Adds a better example for "obnam mount" (Closes: #726808)
+    - Explain --log-max units in manpage (Closes:  #683868)
+    - Fix bug for sftp URL handling of /~/ for home dirs 
+      (Closes: #684349)
+    - Missing node problem fixes (Closes: #705554)
+  * Add Depends and Build-Depends on python-fuse. (Closes: #722553)
+  * Depend and Build-Depend on python-larch 1.20131130 or later.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 30 Nov 2013 11:18:48 +0000
+
+obnam (1.5-1) unstable; urgency=low
+
+  * New upstream release. This fixes the following bugs in Debian:
+    - Larch B-tree is in read-only mode, no changes allowed (Closes: #675820)
+    - obnam should not pass excessive options to ssh (Closes: #700097)
+    - DEBUG OSError ((95, 'Operation not supported', '<filename>'), )
+      sshfs problem? (Closes: #701209)
+    - new upstream version (Closes: #719014)
+    - hidden exclude option (Closes: #686191)
+    - manpage nit: says "obnam backup [FILE]" where it expects a directory
+      (Closes: #676490)
+  * Update cmdtest build dependency to get yarn.
+  * Update larch dependencies, to get important bug fixes.
+
+ -- Lars Wirzenius <liw@liw.fi>  Thu, 08 Aug 2013 22:26:17 +0100
+
+obnam (1.4-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump python-larch, python-ttystatus, python-cliapp, summain,
+    and cmdtest depenencies to current versions.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 16 Mar 2013 11:29:12 +0000
+
+obnam (1.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * Added Gaudenz Steinlin as an uploader.
+  * debian/control: Bump build-dependency on summain to be 0.17 or newer,
+    to deal with new test case for empty xattr values.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sun, 16 Dec 2012 22:00:46 +0000
+
+obnam (1.2-1) unstable; urgency=low
+
+  * debian/control: Fix homepage URL
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 29 Sep 2012 14:34:27 +0100
+
+obnam (1.1-1) unstable; urgency=low
+
+  * New upstream version.
+    - man page unclear about scp url format (Closes: #678742)
+    - manpage : example for keeping policies (Closes: #678628)
+    - manpage unclear about exclude pattern (Closes: #679016)
+  * debian/control: Update all build and runtime dependencies.
+  * debian/control: Drop build-dependency on libattr1-dev, since we now
+    use the header provided by glibc instead.
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 06 Jun 2012 21:00:11 +0100
+
+obnam (1.0-1) unstable; urgency=low
+
+  * Change to build only on linux architectures.
+
+ -- Lars Wirzenius <liw@liw.fi>  Fri, 01 Jun 2012 13:31:59 +0200
+
+obnam (1.0-1) unstable; urgency=low
+
+  * New upstream release.
+    - Fixed bug in finding duplicate files during a backup generation.
+      Thanks to Saint Germain for reporting the problem.
+
+ -- Lars Wirzenius <liw@liw.fi>  Fri, 01 Jun 2012 10:28:36 +0200
+
+obnam (0.30-1) unstable; urgency=low
+
+  * New upstream release.
+    - Fix "FTBFS: xattr test fails if /tmp on tmpfs" by disabling test
+      when user_xattr is not enabled on $TMPDIR (Closes: #674832)
+    - Fix "FTBFS: test convert5to6 fails on FS w/o nanosecond resolution"
+      by ignoring the sub-second portion of the timestamps (Closes: #674834)
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 30 May 2012 16:34:23 +0200
+
+obnam (0.29-1) unstable; urgency=low
+
+  * New upstream release.
+    - "obnam backup" now writes performance statistics at the end of a
+      backup run. Search the log for "Backup performance statistics"
+      (INFO level).
+    - "obnam verify" now continues past the first error. Thanks to
+      Rafał Gwiazda for requesting this.
+    - Add an `obnam-viewprof` utility to translate Python profiling output
+      into human readable text form.
+    - Bug fix: If a file's extended attributes have changed in any way,
+      the change is now backed up.
+    - "obnam fsck" is now a bit faster.
+    - The shared directories in the repository are now locked only during
+      updates, allowing more efficient concurrent backups between several
+      computers.
+    - Obnam now gives a better error message when a backup root is not a
+      directory. Thanks to Edward Allcutt for reporting the error.
+      (Closes: #654211)
+    - The output format of "obnam ls" has changed. It now has one line per
+      file, and includes the full pathname of the file, rather mimicking the
+      output of "ls -lAR". Thanks to Edward Allcutt for the suggestion.
+      (Closes: #655095)
+    - A few optimizations to sftp speed. Small files are still slow.
+  * debian/control: Add build-dependency on the attr package, needed for
+    the test suite.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sun, 27 May 2012 12:32:02 +0200
+
+obnam (0.28-1) unstable; urgency=low
+
+  * New upstream version. Closes the following bugs reported to Debian:
+    - "obnam --encrypt-with" fails with "can't query passphrase in batch mode"
+      (Closes: #649769)
+    - FTBFS: test failed (Closes: #671947)
+    - exception instead of error message on repo version (Closes: #655229)
+    - obnam fails to backup with error on-disk format incompatible
+      (Closes: #655728)
+      obnam now has a better error message and the conver5to6 subcommand
+  * Bumped dependency on python-cliapp to be on 0.29, since that's needed
+    to execute parts of the test suite correctly.
+
+ -- Lars Wirzenius <liw@liw.fi>  Thu, 10 May 2012 23:52:00 +0100
+
+obnam (0.27-1) unstable; urgency=low
+
+  * New upstream release.
+    - obnam ls should respect --generation (Closes: #655093)
+  * Depend on python-larch 0.30 (for larch.FormatName exception, read-only
+    mode).
+
+ -- Lars Wirzenius <liw@liw.fi>  Sun, 15 Apr 2012 20:32:46 +0100
+
+obnam (0.26-1) unstable; urgency=low
+
+  * New upstream version.
+  * debian/control: Bump python-larch dependencies to 0.28.
+  * debian/rules: Only run the fast tests. The slow ones can take hours,
+    and it's not worth doing that for every build.
+  * debian/control: Bump Standards-Version to 3.9.3. No other changes needed.
+
+ -- Lars Wirzenius <liw@liw.fi>  Mon, 26 Mar 2012 18:35:18 +0100
+
+obnam (0.25-1) unstable; urgency=low
+
+  * New upstream version.
+  * Depend on python-larch 0.27, for fsck WorkItem changes
+  * Build-depend on genbackupdata, summain, and cmdtest, which are used
+    by tests.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 18 Feb 2012 11:45:56 +0000
+
+obnam (0.24.1-1) unstable; urgency=low
+
+  * New upstream release.
+    - fixes test case failure on filesystems that do not store sub-second
+      timestamps, which caused failures to build from source on Debian
+      build daemons
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 24 Dec 2011 14:03:21 +0000
+
+obnam (0.24-1) unstable; urgency=low
+
+  * New upstream release.
+    - manpage typo fixes (Closes: #644440)
+    - "obnam backup" fails with "[Errno 38] Function not implemented",
+      turns out to be sshfs not supporting link(2) (Closes: #649767)
+    - restore of particular files/trees not documented (Closes: #649877)
+    - "obnam add-key" gives an unhelpful error message (Closes: #649768)
+  * debian/control:
+    - new build dependency libattr1-dev
+    - bump larch dependencies to 0.26 so that default node size changes
+      don't cause crashes
+  * debian/source/format: drop back to 1.0 for simplicity
+
+ -- Lars Wirzenius <liw@liw.fi>  Thu, 06 Oct 2011 08:20:34 +0100
+
+obnam (0.23-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control: Depend on newer ttystatus for fix to zero division
+    bug, and non-string values for String widget.
+  * debian/control: Update versioned dependency for python-larch to 0.25.
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 31 Aug 2011 00:19:36 +0100
+
+obnam (0.22-2) unstable; urgency=low
+
+  * Fix FTBFS problem. (Closes: #639561)
+
+ -- Lars Wirzenius <liw@liw.fi>  Sun, 28 Aug 2011 16:29:27 +0100
+
+obnam (0.22-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control: Update versioned depedendency on python-cliapp. Upstream
+    now uses the dump_config feature in cliapp 0.18.
+
+ -- Lars Wirzenius <liw@liw.fi>  Thu, 25 Aug 2011 08:31:10 +0100
+
+obnam (0.21-1) unstable; urgency=low
+
+  * New upstream release.
+  * First upload to Debian. (Closes: #636444)
+  * debian/control: Update python-cliapp versioned dependency to match
+    the version that provides dump_memory_profile.
+  * Tweak packaging to match upstream change from Makefile+setup.py to just
+    setup.py.
+  * debian/control: Provide python-obnam.
+
+ -- Lars Wirzenius <liw@liw.fi>  Tue, 23 Aug 2011 18:07:07 +0100
+
+obnam (0.20.1-1) squeeze; urgency=low
+
+  * New upstream release.
+
+ -- Lars Wirzenius <liw@liw.fi>  Thu, 11 Aug 2011 10:37:15 +0100
+
+obnam (0.20-1) squeeze; urgency=low
+
+  * New upstream version.
+
+ -- Lars Wirzenius <liw@liw.fi>  Tue, 09 Aug 2011 11:34:12 +0100
+
+obnam (0.19-1) squeeze; urgency=low
+
+  * New upstream release.
+  * Do not use extrautils during build anymore.
+  * Install files with setup.py --install-layout=deb.
+  * Upgrade dependency on python-larch to 0.21.
+  * Update package description.
+  * Convert into non-native package.
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 03 Aug 2011 19:08:08 +0100
+
+obnam (0.18) squeeze; urgency=low
+
+  * New upstream release. Third BETA release.
+  * debian/pycompat: useless, removed.
+  * Converted to use dh_python2.
+  * Bump Standards-Version. No other changes necessary.
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 20 Jul 2011 23:20:44 +0100
+
+obnam (0.17) squeeze; urgency=low
+
+  * New upstream release. Second BETA release.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 21 May 2011 08:41:29 +0100
+
+obnam (0.16) squeeze; urgency=low
+
+  * New upstream release. The first BETA release.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sun, 17 Apr 2011 10:45:58 +0100
+
+obnam (0.15.1) squeeze; urgency=low
+
+  * New upstream version.
+
+ -- Lars Wirzenius <liw@liw.fi>  Mon, 21 Mar 2011 08:29:05 +0000
+
+obnam (0.15) squeeze; urgency=low
+
+  * New upstream release.
+
+ -- Lars Wirzenius <liw@liw.fi>  Mon, 21 Mar 2011 08:10:33 +0000
+
+obnam (0.14) squeeze; urgency=low
+
+  * New upstream release.
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 29 Dec 2010 20:41:15 +0000
+
+obnam (0.13) squeeze; urgency=low
+
+  * New upstream release.
+    - checkpointing bugfix
+    - upload speed displayed during backups
+    - posix_fadvise used when reading/writing data to local filesystem
+    - --lru-size option
+  * debian/control: Upgrade dependencies (run-time and build-time) for
+    python-btree and python-ttystatus.
+
+ -- Lars Wirzenius <liw@liw.fi>  Tue, 13 Jul 2010 09:21:43 +1200
+
+obnam (0.12.1) squeeze; urgency=low
+
+  * debian/control: Add python-paramiko as build and run-time dependency.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sun, 11 Jul 2010 20:06:48 +1200
+
+obnam (0.12) squeeze; urgency=low
+
+  * New upstream release.
+    - speed optimizations, resulting in incompatible on-disk data structures
+    - preliminary SFTP support
+    - includes plugins in .deb (via fix in setup.py)
+  * debian/control: Bumped Standards-Version. No other changed needed.
+  * debian/control: Bumped required version of python-btree.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sun, 11 Jul 2010 19:07:33 +1200
+
+obnam (0.11) squeeze; urgency=low
+
+  * New upstream release.
+    - speed optimizations
+    - some new options
+
+ -- Lars Wirzenius <liw@liw.fi>  Mon, 05 Jul 2010 17:04:08 +1200
+
+obnam (0.10) squeeze; urgency=low
+
+  * Initial packaging. This is not intended to be uploaded to Debian, so
+    no closing of an ITP bug.
+
+ -- Lars Wirzenius <liw@liw.fi>  Tue, 29 Jun 2010 16:21:31 +1200
