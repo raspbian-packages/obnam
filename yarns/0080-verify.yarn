@@ -1,0 +1,55 @@
+Verify backed up data
+=====================
+
+Verify notices modification time change
+---------------------------------------
+
+The user may want to verify that all their live data is still intact.
+This is done with `obnam verify`.
+
+    SCENARIO verify notices mtime change
+    GIVEN 100kB of new data in directory L
+    AND file L/foo has Unix timestamp 0
+    WHEN user U backs up directory L to repository R
+    AND user U attempts to verify L against repository R
+    THEN the attempt succeeded
+
+However, if there have been any changes, such as for a timestamp, then
+the verification should find a problem.
+
+    GIVEN file L/foo has Unix timestamp 1
+    WHEN user U attempts to verify L against repository R
+    THEN the attempt failed with exit code 1
+
+RDF30DX is the error code for metadata change, of which modification
+time is one.
+
+    THEN the error message matches "RDF30DX.*st_mtime_sec"
+
+Verify one file randomly
+------------------------
+
+`obnam verify` can pick files to verify randomly, for spot checks.
+
+    SCENARIO verify a random file
+    GIVEN 100kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+    AND user U attempts to verify a random file in  L against repository R
+    THEN the attempt succeeded
+
+
+Verify notices when live data file has been appended to
+-------------------------------------------------------
+
+In March, 2015, Thomas Waldemann noticed that `obnam verify` would
+fail to notice if the live data file had been appended to. This
+regression test catches the problem.
+
+    SCENARIO verify file that has been appended to
+    GIVEN 0B of data in file L/foo
+    AND file L/foo has Unix timestamp 0
+    WHEN user U backs up directory L to repository R
+    GIVEN 1B of data in file L/foo
+    AND file L/foo has Unix timestamp 0
+    WHEN user U attempts to verify L against repository R
+    THEN the attempt failed with exit code 1

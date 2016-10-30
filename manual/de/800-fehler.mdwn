@@ -1,0 +1,11 @@
+Anhang: Fehlermeldungen
+=======================
+
+Dieser Anhang listet sämtliche Obnam-Fehlermeldungen auf.
+Möglicherweise sehen Sie andere noch Fehlermeldungen während
+Sie Obnam benutzen. Diese sind hier nicht aufgeführt, weil sie
+nicht von Obnam stammen.
+
+Die Meldungen sind zwei Mal aufgeführt:
+Einmal kurz in Reihenfolge der Fehlernummern und dann nochmal ausführlich
+in alphabetischer Reihenfolge.

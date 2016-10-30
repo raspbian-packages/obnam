@@ -1,0 +1,197 @@
+Bei der Entwicklung von Obnam mithelfen
+=======================================
+
+Das Obnam Projekt ist, verglichen mit anderen Software-Projekten, recht 
+klein. Es gibt einen Hauptentwickler und ein paar Andere, die manchmal 
+helfen. Es wäre schön wenn sich mehr Menschen beteiligten, dieses 
+Kapitel ist als Einführung dafür gedacht.
+
+Es ist ein verbreitetes Missverständnis, dass in einem Software Projekt 
+ausschließlich Code etwas zählt. Im Gegenteil, ohne eine Anzahl ander 
+Dinge ist Code nutzlos, insbesondere in einem freien Software-Projekt 
+wie Obnam.
+
+Beispiele für notwendige Dinge in fast jedem ernsthaften 
+Software-Projekt:
+
+* Schreiben und aktualisieren der Dokumentation, inkl. Handbüchern und 
+  Webseiten
+* Übersetzung von Dokumentation und Benutzeroberfläche
+* Unterstützung anderer Benutzer bei Fragen oder Problemen
+* reporting actionable bugs
+
+* Bearbeitung von Ferhlerberichten: Nachfragen und Klärung, den 
+  gemeldete Fehler reproduzieren, die Ursache für den Fehler 
+  herausarbeiten und das Entwickeln einer passenden Lösung
+* die Software auf verschiedene Plattformen portieren, z.B. verschiedene 
+  Betriebssysteme, verschiedene Versionen dieser Betriebssysteme, 
+  verschiedene Versionen der Sprachen und Bibliotheken welche die Software 
+  verwendet, unterschiedliche Hardware, usw.
+* Qualitätssicherung: Entwicklung und Durchführung von manuellen und 
+  automatisierten Tests und Benchmarks, Analyse der Ergebnisse
+* Hosting und Betrieb von Webseiten, Mailinglisten, IRC-Kanälen und 
+  anderen Kommunikationskanälen
+* Projektsteuerung, inkl. Umgang mit Konflikten zwischen Projektmitgliedern
+* Projektmanagement im Allgemeinen, inkl. Sicherung des Projektfortschritts
+* Letzlich, das Schreiben von Code. Sicherlich ein notwendiger, aber
+  nicht ausreichender Teil eines Projekts, das auch Personen abseits
+  der Entwicklung verwenden können.
+
+Diese Liste ist unvollständig, Hinweise zur Erweiterung werden gern 
+angenommen. Um zu erfahren wie Sie diese Liste vervollständigen können, 
+lesen Sie bitte den Rest dieses Kapitels.
+
+
+Hilfe beim User-Support
+-----------------------
+
+Vielleicht ist der einfachste Weg, sich am Projekt zu beteiligen die 
+Mithilfe bei der Unterstützung anderer Benutzer der Software. Das ist 
+einfach und Sie müssen nicht notwendigerweise mehr können, als die 
+Software selbst zu benutzen. Dennoch ist es eien sehr wertvolle 
+Tätigkeit, da sie dadurch andere entlasten. Sogar bei Softare höchster 
+Qualität und einfachster Bedienung gibt es immer Bedarf für die 
+Benutzerunterstützung:
+
+* Code kann fehlerhaft sein und Benutzer könnten dies bemerken.
+  Die Analyse der Situation und das Isolieren des Fehlers sind ein
+  wichtiger Bestandteil des Software-Entwicklungsprozesses.
+* Die Dokumentation kann unzureichend oder veraltet sein, oder auch
+  eine Funktoin beschreiben, die es noch garnicht gibt.
+
+* Manche Menschen haben - aus welchem Grund auch immer - 
+  Missverständnisse, die zu Problemen im Umgang mit der Software führen. 
+  Das eigentliche Problem und die Ursache herauszufinden, kann eine 
+  zeitaufwendige Sache sein. Oft erfordert diese Fleißaufgabe keine 
+  besonderen Fähigkeiten (mit Ausnahme von Geduld und der Bereitschaft,
+  eine Menge Fragen zu stellen. 
+
+Der beste Weg dem Obnam-Projekt zu helfen? Abonnieren Sie die 
+Mailingliste `obnam-support@obnam.org` oder verbinden Sie Sich mit dem 
+IRC Kanal `#obnam` (irc.oftc.net) und beginnen Sie, Fragen zu 
+beantworten.
+
+Es ist OK kein Experte zu sein. Anderen zu helfen ist eine gute 
+Möglichkeit, selbst etwas zu lernen. Wenn Sie deutlich machen das Sie 
+zwar kein Experte sind, aber trotzdem versuchen zu helfen, wird Ihre 
+Hilfe in der Regel noch mehr geschätzt.
+
+Eine Vorschläge zur Unterstützung dieses Projekts:
+
+* Versuchen Sie zu verstehen was die Personen die Hilfe brauchen
+  tatsächlich erreichen möchten. Meist ist das besser als die Frage 
+  wörtlich zu beantworten. Noch besser wäre es, Sie tun beides.
+
+* Sie brauchen keine Problemlösung, um sich zu beteiligen. Eine schnelle
+  aber unvollständige Antwort, welche die Diskussion voranbringt, ist
+  ebenfalls hilfreich. Auch wenn Sie die korrekte Antwort nicht kennen,
+  macht es Sinn Rückfragen zu stellen, Hilfe suchende geben dann z. B.
+  weiterführende Informationen oder finden die Lösung sogar selbst.
+  Eventuell führt Ihre Rückfrage auch dazu, dass jemand anders die
+  Lösung findet.
+
+* Seien sie bitte hilfsbereit und höflich. Immer. Antworten Sie nie mit
+  "read the fine manual" (RTFM for short). Es ist OK darauf hin zu
+  weisen, dass die Antwort im Handbuch steht, aber bitte zitieren Sie
+  dann aus dem Handbuch und geben Sie einen Link zum Nachlesen.
+
+* Wer Hilfe sucht ist oft frustriert, manchmal sogar verzweifelt.
+  Er hat vermutlich wieder und wieder versucht, das Problem selbst
+  zu lösen und ist daran gescheitert. Dies kann sich in den Anfragen
+  wieder spiegeln. Ignorieren Sie diesen Subtext, es sei denn der 
+  Fragende wird tatsächlich konkret unhöflich, dann sollten Sie
+  die Situation eskalieren. Vermeiden Sie einen Streit, bei dem es
+  darum geht wer Recht hat und wer nicht, und wer wann was gesagt 
+  hat und wie es gemeint war.
+
+* Es ist besser gar nicht zu antworten, als eine Antwort zu verfassen
+  während man noch gereizt, verärgert oder wütend ist. Für das Projekt
+  ist eine höfliche und hilfreiche Arbeitsatmosphäre auf lange Sicht
+  wichtiger als die konkrete Lösung eines technischen Problems.
+
+Kurz gesagt: Wenn Sie Ihr Bestes geben um höflich, freundlich, und 
+hilfsbereit zu sein, dann antworten Sie ruhig.
+
+
+Schreiben und Aktualisieren der Dokumentation
+---------------------------------------------
+
+Das Projekt hat mehrere Arten von Dokumentation:
+
+* Die `obnam.org` Website.
+* Die manpage.
+* Das Handbuch (das Sie gerade lesen).
+* Verschiedene Blog posts im Internet.
+
+Dokumentation schreiben ist recht einfach. Sie aktuell zu halten ist 
+schon ein wenig mehr Aufwand, denn dazu muss die bereits bestehende 
+Dokumentation auf Aktualität geprüft werden. Hauptziele der 
+Obnam-Dokumentation sind:
+
+* Genauigkeit.
+* Klarheit.
+* Vollständigkeit.
+* Eine Prise trockener Humor hier und da.
+
+Jede Hilfe die sie hier geben können ist sehr willkommen.
+
+* Lesen Sie die bestehende Dokumentation.
+* Wenn Sie etwas finden das falsch, ungenau, unvollständig oder unklar ist
+  oder wenn etwas fehlt, schreiben Sie eine Mail an die Entwickler-Mailingliste.
+* Wenn Sie eine bessere Formulierung beisteuern können, wäre das klasse.
+  Es ist aber nicht zwingend erforderlich.
+* Perfekt wäre es, wenn Sie sogar einen konkreten Patch erstellen können,
+  weil es dann am einfachsten ist, Ihren Vorschlag umzusetzen. Aber auch dies
+  ist nicht zwingend erforderlich.
+
+Sie müssen kein toller Autor sein. Andere werden im Rahmen es Prozesses 
+prüfen was Sie erstellen und ggf. darauf hinweisen, was ihrer Meinung 
+nach verbessert werden könnte. Zum Beispiel könnte Ihnen auffallen, das 
+ein Absatz dieses Handbuchs unklar ist, auch wenn Sie nicht genau wissen 
+wie er besser formuliert wäre. Wenn Sie dies jetzt in einer eMail 
+erwähnen, können anschließend andere eine bessere Formulierung finden.
+
+Übersetzungen
+-------------
+
+Das Obnam Handbuch und die Manpage sind in Englisch geschrieben und 
+wurden auf Deutsch übersetzt. Andere Sprachen sind herzlich willkommen.
+
+Der Autor dieses Handbuchs ist nicht besonders vertraut mit dem Prozess 
+der Übersetzung und wünscht sich, das jemand anders dieses Kapitel 
+füllt.
+
+Die Obnam Benutzerschnittstelle kann momentan nicht übersetzt werden, um 
+dies zu erreichen sind Änderungen am Code notwendig. Hilfe bei diesen 
+Änderungen wären nett...
+
+Entwicklung des Codes
+---------------------
+
+Vorausgesetzt, Sie wissen bereits wie man programmiert, ist es ziemlich 
+einfach mit der Obnam Code-Base zu arbeiten. Zumindest sollte es so 
+sein: Wenn Sie Schwierigkeiten haben, fragen Sie und weisen darauf hin, 
+was unklar oder falsch ist.
+
+Ziehen Sie Sich die Quellen vom git Server und lesen Sie das `README` um 
+Einzelheiten darüber zu erfahren, wie Sie loslegen könnnen, die 
+automatisierten Tests ausführen, und wie Sie Patches senden können. Auf 
+der Webseite finden Sie einige Entwickler-Dokumenation, inkl. 
+Erklärungen zu den on-disk Datenstrukturen.
+
+Nicht-triviale Änderungen am Code sollten in einer Form gesendet werden, 
+mit der git umgehen kann. Das könnten ein Patch sein, den Sie an die 
+Mailingliste schicken, oder auch eine URL von der die Änderungen 
+gemerged werden können.
+
+Projektführung
+--------------
+
+Das Obnam-Projekt hat eine eher informelle Führungsstruktur: Der 
+Gründer, Lars Wirzenius, hat alle Macht, jeder andere keine. Mit 
+zunehmendem Wachstum des Projekts wird sich das ändern.
+
+Wenn es irgendwo ein Zwischenmenschliches Problem gibt, zum Beispiel 
+wenn sich jemand daneben benimmt, ist es am besten, das direkt an Lars 
+zu melden. Sollte Lars das Problem sein ist es am besten ihn direkt zur 
+Rede zu stellen.
