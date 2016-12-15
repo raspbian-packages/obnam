@@ -1,0 +1,248 @@
+Multiple backup generations
+===========================
+
+This chapter contains tests for Obnam's handling of multiple
+generations: making incremental backups, forgetting generations, and
+so on. We assume that backing up any individual directory tree works
+fine, regardless of whether it is for the initial generation or an
+incremental one. In the previous chapter for basic backups, we've
+already dealt with those. This chapter focuses on generation handling
+only.
+
+Incremental backup generations (`obnam backup`)
+------------------------------
+
+First of all, most importantly, we must be able to make more than one
+backup generation, and restore them. The live data in each generation
+is different, but there are unchanged parts as well. For simplicity,
+we'll assume that if we can do two generations, we can do any number.
+It's possible that the 12765th generation might break, but that's
+unlikely, and it's even less likely we'll guess it. (If it turns out
+to actually happen, we'll add a regression test when we find the
+problem.)
+
+    SCENARIO backup two generations
+    GIVEN 1MB of new data in directory L
+    AND a manifest of L in G1
+    WHEN user U backs up directory L to repository R
+    GIVEN 2MB of new data in directory L
+    AND a manifest of L in G2
+    WHEN user U backs up directory L to repository R
+    AND user U restores generation 1 to R1 from repository R
+    AND user U restores generation 2 to R2 from repository R
+    THEN L, restored to R1, matches manifest G1
+    AND L, restored to R2, matches manifest G2
+
+Listing generations (`obnam generations`, `obnam genids`)
+-------------------
+
+When we make some number of generations, the Obnam generation listing
+commands should show that number of generations.
+
+    SCENARIO list generations
+    GIVEN 1MB of new data in directory L
+    WHEN user U backs up directory L to repository R
+    AND user U backs up directory L to repository R
+    AND user U backs up directory L to repository R
+    THEN user U sees 3 generations in repository R
+    AND user U sees 3 generation ids in repository R
+
+Listing contents of a generation (`obnam ls`)
+--------------------------------
+
+We'll assume the `obnam ls` command shows any generation.
+However, there's a couple of ways of using it: either listing
+everything, or only a specific directory to list.
+
+    SCENARIO list generation content
+    GIVEN 1MB of new data in directory D
+    WHEN user U backs up directory D to repository R
+    AND user U lists latest generation in repository R into all.txt
+    THEN all.txt matches /.*/D/.
+    WHEN user U lists D in latest generation in repository R into some.txt
+    THEN all lines in some.txt match (/D|Generation)
+
+The first line of the generation listing contains the word
+"Generation". Every other line should contain the directory we
+requested as part of the pathname.
+
+There was a bug in Obnam 1.5 (and possibly other versions) that
+listing contents of a directory that ends in a slash (but isn't the
+root directory) fails. The following is a test for that bug by
+requesting `D/` to be listed, and verifying that we get at least one
+line for that.
+
+    WHEN user U lists D/ in latest generation in repository R into bug.txt
+    THEN bug.txt matches /D
+
+Comparing generations (`obnam diff`)
+------------------------------------
+
+Once we've backed up two generations, we need to be able to see the
+difference. First of all, the diff should be empty when the
+generations are identical:
+
+    SCENARIO diff identical generations
+    GIVEN 1K of new data in directory L
+    WHEN user U backs up directory L to repository R
+    AND user U backs up directory L to repository R
+    AND user U diffs generations 1 and 2 in repository R into D
+    THEN file D is empty
+
+`obnam diff` can be used with just one generation, and that compares
+it with the generation preceding the given one.
+
+    WHEN user U diffs latest generation in repository R into D
+    THEN file D is empty
+    
+If we make a change to the data, that should be reflected in the diff.
+We'll assume the diff works, we'll just check whether it's empty.
+
+    SCENARIO diff modified generations
+    GIVEN 1K of new data in directory L
+    WHEN user U backs up directory L to repository R
+    GIVEN 1K of new data in directory L
+    WHEN user U backs up directory L to repository R
+    AND user U diffs generations 1 and 2 in repository R into D
+    THEN file D is not empty
+
+`obnam forget` does nothing by default
+----------------------
+
+`obnam forget` is the command to remove backup generations from the
+repository. It can be used to remove specific generations, or to
+remove generations according to a schedule. If neither is specified,
+it should do nothing.
+
+    SCENARIO forget does nothing by default
+    GIVEN 1K of new data in directory L
+    AND a manifest of L in M
+
+    WHEN user U backs up directory L to repository R
+    AND user U runs obnam forget without generations or keep policy on repository R
+    THEN user U sees 1 generation in repository R
+
+    WHEN user U restores their latest generation in repository R into X
+    THEN L, restored to X, matches manifest M
+
+Forgetting a specific generation (`obnam forget`)
+--------------------------------
+
+We need to be able to remove any generation. As a corner case, we
+should be able to remove the only generation. We'll test by making two
+generations, then removing both, and after removing the first one,
+checking that the remaining one is the one we want.
+
+    SCENARIO remove specific generations
+    GIVEN 1kB of new data in directory L
+    AND a manifest of L in M1
+    WHEN user U backs up directory L to repository R
+    GIVEN 1kB of new data in directory L
+    AND a manifest of L in M2
+    WHEN user U backs up directory L to repository R
+    AND user U forgets the oldest generation in repository R
+    THEN user U sees 1 generation in repository R
+    WHEN user U restores their latest generation in repository R into X
+    THEN L, restored to X, matches manifest M2
+    WHEN user U forgets the oldest generation in repository R
+    THEN user U sees 0 generations in repository R
+
+Forgetting generations according to a schedule (`obnam forget --keep`)
+-------------------------------------------------------------
+
+The normal way of forgetting generations is with the `obnam forget
+--keep` option.
+
+    SCENARIO remove generations according to schedule
+    GIVEN 1kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+    GIVEN 1kB of new data in directory L
+    AND a manifest of L in M
+    WHEN user U backs up directory L to repository R
+    AND user U forgets according to schedule 1y in repository R
+    THEN user U sees 1 generation in repository R
+    WHEN user U restores their latest generation in repository R into X
+    THEN L, restored to X, matches manifest M
+
+There has been reports that the "keep N hourly backups" type of
+`--keep` policy doesn't work. Test this by creating several
+generations, pretending the time is something specific, and then check
+that the right ones get kept. For each calendar hour, we make two
+generations, and we create them for every other calendar hour, for
+four such hours (covering a total of eight hours). We then keep two
+hourly backups. This should result in the later of each backup during
+a calendar hour to be kept, for the last two calendar hours.
+
+    SCENARIO keep N hourly generations
+
+The first generation of the first hour.
+
+    GIVEN user U sets configuration pretend-time to 2014-03-19 01:00:00
+    AND 1kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+
+The second generation of the first hour.
+
+    GIVEN user U sets configuration pretend-time to 2014-03-19 01:30:00
+    AND 1kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+
+The first generation of the second hour.
+
+    GIVEN user U sets configuration pretend-time to 2014-03-19 02:00:00
+    AND 1kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+
+The second generation of the second hour.
+
+    GIVEN user U sets configuration pretend-time to 2014-03-19 02:30:00
+    AND 1kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+
+The first generation of the third hour.
+
+    GIVEN user U sets configuration pretend-time to 2014-03-19 03:00:00
+    AND 1kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+
+The second generation of the third hour.
+
+    GIVEN user U sets configuration pretend-time to 2014-03-19 03:30:00
+    AND 1kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+
+The first generation of the fourth hour.
+
+    GIVEN user U sets configuration pretend-time to 2014-03-19 04:00:00
+    AND 1kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+
+The second generation of the fourth hour.
+
+    GIVEN user U sets configuration pretend-time to 2014-03-19 04:30:00
+    AND 1kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+
+Now run the forget and verify.
+
+    WHEN user U forgets according to schedule 2h in repository R
+    THEN user U sees 2 generations in repository R
+    AND user U has 1st generation timestamp 2014-03-19 03:30:00 in repository R
+    AND user U has 2nd generation timestamp 2014-03-19 04:30:00 in repository R
+
+Dnn't really forget anything if pretending
+------------------------------------------
+
+The `--pretend` option prevents `obnam forget` from actually removing
+anything, but lets the user see what would be removed.
+
+    SCENARIO forget doesn't really, when pretending
+    GIVEN 1kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+    GIVEN 1kB of new data in directory L
+    AND a manifest of L in M
+    WHEN user U backs up directory L to repository R
+    AND user U pretends to forget according to schedule 1y in repository R
+    THEN user U sees 2 generations in repository R
+    WHEN user U restores their latest generation in repository R into X
+    THEN L, restored to X, matches manifest M

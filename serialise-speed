@@ -1,0 +1,71 @@
+#!/usr/bin/env python
+# Copyright 2010-2015  Lars Wirzenius
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+import sys
+import time
+
+import cliapp
+import yaml
+
+import obnamlib
+
+
+def measure(n, func):
+    start = time.clock()
+    for i in range(n):
+        func()
+    end = time.clock()
+    return end - start
+
+
+class MicroBenchmark(cliapp.Application):
+
+    def process_args(self, args):
+        n = int(args[0])
+        if len(args) > 1:
+            obj = self.read_object(args[1])
+        else:
+            obj = self.get_builtin_object()
+        encoded = obnamlib.serialise_object(obj)
+
+        calibrate = measure(n, lambda: None)
+        encode = measure(n, lambda: obnamlib.serialise_object(obj))
+        self.report('encode', n, encode - calibrate)
+        decode = measure(n, lambda: obnamlib.deserialise_object(encoded))
+        self.report('decode', n, decode - calibrate)
+
+    def read_object(self, filename):
+        with open(filename) as f:
+            return yaml.safe_load(f)
+
+    def get_builtin_object(self):
+        return {
+            'foo': 'bar',
+            'big': 'x' * 1024**2,
+            'dict': {
+                'foo': 'yo',
+                'long': ['x'] * 1024**2,
+            }
+        }
+
+    def report(self, what, num_iters, duration):
+        self.output.write(
+            '%s: %s ms/iter (%.1f/s)\n' %
+            (what, 1000.0 * duration/num_iters, num_iters/duration))
+
+if __name__ == '__main__':
+    MicroBenchmark().run()
