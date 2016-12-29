@@ -1,0 +1,41 @@
+Einleitung
+============
+
+> ... Backups? Hat hier jemand was von Backups gesagt? Ich bin sicher
+> das hier irgendwer über Backups gesprochen hat.
+> Backups! BACKUPS! BACKUPS SIND ABGEFAHREN!
+
+Das ist ein Zitat direkt aus meiner IRC history. Ich finde Backups recht
+interessant, besonders die Implementierung, und manchmal bin ich
+sogar etwas besessen davon. Deswegen habe ich meine eigenes Backup-Programm
+geschrieben. Ich nenne es Obnam. Das ist sein Handbuch.
+
+Ich bin ungewöhnlich: Leute finden Backups meistens nervtötend
+und allenfalls langweilig. Wenn ich mit Leuten über Backups rede, dann
+ist die Reaktion normalerweise "Ich weiß, ich sollte...". Es gibt viele
+Gründe dafür. Einer ist, dass Backups so ähnlich wie Versicherungen sind:
+Man muss zunächst Zeit, Arbeit und Geld 'reinstecken um hinterher von ihnen
+Gebrauch zu machen. Ein anderer Grund ist, dass das gesamte Thema beängstigend ist:
+Man muss darüber nachdenken was passiert wenn etwas richtig schief läuft, und das schreckt die Leute ab.
+Ein dritter Grund ist: Es gibt zwar eine Menge an Backup-Tools, aber es ist nicht immer einfach eines auszuwählen.
+
+Dieses Handbuch ist für das Obnam Programm, aber es versucht für jeden nützlich zu sein, der über Backups nachdenkt.
+
+Anmerkung des Übersetzers
+-------------------------
+
+Ich bin kein professioneller Übersetzer, sondern ein
+interessierter Obnam Anwender. Aus Erfahrung weiß ich,
+dass man sich beim Übersetzen von fremdsprachigen Texten immer wieder
+die Frage stellt, ob man Begriffe eindeutschen soll, oder nicht.
+Viele englische Begriffe werden auch im deutschen Umfeld
+verwendet, daher habe ich einige Begriffe nicht übersetzt von
+denen ich denke, dass sie dem Leser bekannt sind.
+
+Sicherlich kann die eine oder andere Stelle anders, manchmal
+auch besser übersetzt werden. Für Anregungen und konstruktive Kritik
+bin ich dankbar und werde sie gegebenenfalls an Lars weiterleiten.
+
+
+-- Jan Niggemann
+

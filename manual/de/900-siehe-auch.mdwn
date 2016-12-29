@@ -1,0 +1,14 @@
+Siehe auch...
+=============
+
+Dieses Kapitel gibt Hinweise auf weitere Informationen über Obnam, Backups,
+und verwandte Dinge. Zur Zeit ist dies eine sehr kurze Liste, aber
+Vorschläge zu Dingen, die hinzugefügt werden können akzeptieren wir gern.
+
+* Obnam Homepage (englisch): <http://obnam.org>.
+    - Kurze Tutorials, Download-Links, eine FAQ, Kontaktinformationen usw.
+* Lars Wirzenius, interessante Blog-Tags.
+    - <http://blog.liw.fi/tag/backups/>
+    - <http://blog.liw.fi/tag/obnam/>
+* Cache directory tag Standard: <http://www.bford.info/cachedir/>
+    - <http://liw.fi/cachedir/> Ein Programm, um die Tag-Dateien zu verwalten

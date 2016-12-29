@@ -1,0 +1,88 @@
+Troubleshooting
+===============
+
+This chapter discusses how to debug problems with Obnam. It covers
+things such as log files, various levels of logging and tracing, and
+common problems with Obnam use. It also explains what things go where
+in an Obnam backup repository.
+
+
+Turning on full logging
+-----------------------
+
+Obnam can write a log file. There are several options controlling
+that. Knowing these can help get out the most information when there's
+a problem that needs to be investigated.
+
+* `--log=obnam.log` tells Obnam where to log. The log is a simple text
+  file.
+* `--log-level=debug` tells Obnam to log at the most detailed level.
+  The default level is `info`, which excludes most debug information.
+* `--trace=obnamlib --trace=larch` tells Obnam to log additional debug
+  information. The two arguments match all filenames in Obnam and the
+  Larch library Obnam uses. This additional information is mostly
+  useful to someone who can read and understand the program source
+  code.
+
+Note that these settings can make log files be quite large, in the
+order of tens of megabytes. The size depends on how many files and how
+much data your live data has.
+
+
+Reporting problems ("bugs")
+---------------------------
+
+If you have a problem with Obnam, and you want to report it (please
+do!), including the following information is helpful and makes it
+easier to figure out what the problem is.
+
+* You should report problems to the `obnam-support@obnam.org` mailing
+  list. This is a publicly archived mailing list where various
+  people help others use Obnam.
+
+  If you respond to messages on `obnam-support`, **always** keep the
+  list in the cc list. This means others will see the response, and
+  there's a chance that they can help you better than the particular
+  person you're responding to. Also, the archived discussion may be
+  helpful to later readers, perhaps years afterwards.
+
+* What is the problem? What did you try to achieve? What actually
+  happened?
+
+* The version of Obnam and Larch you're using, and how you installed
+  it.
+    - On Debian, run `dpkg -l obnam python-larch` on the command line
+      and include the output.
+
+* The exact command line you used. Copy-paste it instead of
+  typing it again into the mail. Sometimes the problem can be hidden
+  if you don't copy the command line exactly. Also, copying by typing
+  is boring, and we should avoid boring things in life.
+
+* If there's an error message, copy-paste that into the mail.
+
+* The output of `obnam --dump-config`, which includes the full
+  configuration. Include it as an attachment to your mail to
+  `obnam-support`. If you have some secret information, such as
+  filenames or hostnames, you can replace those with XXXX.
+
+* If you can reproduce the problem while running with
+  `--log-level=debug`, `--log=obnam.log` and `--trace=obnamlib
+  --trace=larch` options, include a suitable amount from the end of
+  the log file. The suitable amount may depend on the situation, but
+  if you give the last two hundred lines, and it's not enough, we'll
+  ask for more. Again, feel free to replace any sensitive filenames,
+  etc, with XXXX.
+
+* The output of the `env` command, in the same terminal window in
+  which you ran Obnam. (Again, as an attachment.)
+
+* If your bug is about performance, please run Obnam under profiling,
+  and attach the profiling file. To run Obnam under profiling, install
+  the Python profile (`python-profiler` package in Debian/Ubuntu), and
+  set the `OBNAM_PROFILE` environment variable to the name of the file
+  with the profiling output (that's the file you should send by mail).
+  For example: `OBNAM_PROFILE=obnam.prof obnam backup` would run the
+  backup under the profiler, and write the result to `obnam.prof`.
+
+Thank you for your help in making Obnam better.

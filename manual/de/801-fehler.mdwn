@@ -1,0 +1,268 @@
+## Nach Fehlercode
+
+* `R018FCX ToplevelIsFileError`
+* `R01F56X RepositorySettingMissingError`
+* `R02C17X HardlinkError`
+* `R0B15DX RepositoryGenerationDoesNotExist`
+* `R0BE94X RepositoryClientNotLocked`
+* `R0C79EX GpgError`
+* `R0F22CX URLSchemeAlreadyRegisteredError`
+* `R0FC21X SetMetadataError`
+* `R169C6X MissingFilterError`
+* `R173AEX NoFilterTagError`
+* `R1A025X RepositoryClientKeyNotAllowed`
+* `R1CA00X ClientDoesNotExistError`
+* `R22E66X SizeSyntaxError`
+* `R24424X RepositoryClientDoesNotExist`
+* `R283A6X UnitNameError`
+* `R2FA37X WrongNumberOfGenerationSettingsError`
+* `R338F2X BackupRootMissingError`
+* `R3B42AX WrongNumberOfGenerationsForVerify`
+* `R3E151X RepositoryFileDoesNotExistInGeneration`
+* `R3E1C1X RestoreTargetNotEmpty`
+* `R41CE6X RepositoryClientAlreadyExists`
+* `R43272X RepositoryChunkDoesNotExist`
+* `R45B50X DuplicatePeriodError`
+* `R47416X WrongHostKeyError`
+* `R4C3BCX BackupErrors`
+* `R57207X RepositoryClientGenerationUnfinished`
+* `R5914DX InvalidPortError`
+* `R5F98AX NoHostKeyError`
+* `R681AEX LockFail`
+* `R6A098X RepositoryGenerationKeyNotAllowed`
+* `R6C1C8X RepositoryClientListNotLocked`
+* `R6EAF2X RepositoryClientLockingFailed`
+* `R7137EX BagIdNotSetError`
+* `R79699X RepositoryFileKeyNotAllowed`
+* `R79ED6X BackupRootDoesNotExist`
+* `R7B8D0X FileNotFoundError`
+* `R826A1X UnknownVFSError`
+* `R8AAC1X NoHostKeyOfWantedTypeError`
+* `R8F974X RepositoryChunkIndexesLockingFailed`
+* `R91CA1X ShowFirstGenerationError`
+* `R9808DX ForgetPolicySyntaxError`
+* `RA4F35X RootIsNotADirectory`
+* `RA5942X WrongNumberOfGenerationsForDiffError`
+* `RA7D64X UnknownRepositoryFormatWanted`
+* `RA881CX RepositoryChunkContentNotInIndexes`
+* `RA920EX NotARepository`
+* `RABC26X FuseModuleNotFoundError`
+* `RB1048X RepositoryClientListLockingFailed`
+* `RB4324X GAImmutableError`
+* `RB8E98X WrongURLSchemeError`
+* `RB927BX SeparatorError`
+* `RBF6DDX RepositoryAccessError`
+* `RCB0CAX KeyAuthenticationError`
+* `RCE08AX ObnamIOError`
+* `RCEF5CX MallocError`
+* `RD5FA4X ObnamSystemError`
+* `RD6259X RestoreErrors`
+* `RDF30DX Fail`
+* `RE187FX RepositoryChunkIndexesNotLocked`
+* `REFB32X RepositoryClientHasNoGenerations`
+* `RF4EFDX UnknownRepositoryFormat`
+
+
+## Nach Name
+
+`BackupErrors` (`R4C3BCX`)
+:   Fehler während des Backups
+
+`BackupRootDoesNotExist` (`R79ED6X`)
+:   Backup root existiert nicht oder ist kein Verzeichnis: {root}
+
+`BackupRootMissingError` (`R338F2X`)
+:   Kein Backup root angegeben
+
+`BagIdNotSetError` (`R7137EX`)
+:   Bag id not set: Kann keinen Blob anfügen (Programmierfehler)
+
+`ClientDoesNotExistError` (`R1CA00X`)
+:   Client {client} existiert nicht im Repository {repo}
+
+`DuplicatePeriodError` (`R45B50X`)
+:   Forget policy darf Zeitraum nicht duplizieren ({period}): {policy}
+
+`Fail` (`RDF30DX`)
+:   {filename}: {reason}
+
+`FileNotFoundError` (`R7B8D0X`)
+:   FUSE: Datei nicht gefunden: {filename}
+
+`ForgetPolicySyntaxError` (`R9808DX`)
+:   Syntaxfehler in der forget policy: {policy}
+
+`FuseModuleNotFoundError` (`RABC26X`)
+:   Konnte das Modul "fuse" nicht laden, installieren Sie ggf. python-fuse
+
+`GAImmutableError` (`RB4324X`)
+:   Attempt to modify an immutable GADirectory
+
+`GpgError` (`R0C79EX`)
+:   gpg failed with exit code {returncode}: {stderr}
+
+`HardlinkError` (`R02C17X`)
+:   Kann keine Hardlinks mittels SFTP erstellen
+
+    Dies beruht auf einer Einschränkung der Python paramiko Bibliothek
+    welche Obnam für SSH / SFTP benutzt.
+
+`InvalidPortError` (`R5914DX`)
+:   Ungültige Port-Nummer {port} in {url}: {error}
+
+`KeyAuthenticationError` (`RCB0CAX`)
+:   Kann nicht mittels Schlüssel am SSH server authentifizieren
+
+`LockFail` (`R681AEX`)
+:   Konnte lock nicht erzeugen {lock_name}: {reason}
+
+`MallocError` (`RCEF5CX`)
+:   malloc out of memory bein Aufruf von {function}
+
+`MissingFilterError` (`R169C6X`)
+:   Unknown filter tag: {tagname}
+
+`NoFilterTagError` (`R173AEX`)
+:   Kein filter tag gefunden
+
+`NoHostKeyError` (`R5F98AX`)
+:   Kein host key für {hostname} gefunden
+
+`NoHostKeyOfWantedTypeError` (`R8AAC1X`)
+:   No known type {key_type} host key for {hostname}
+
+`NotARepository` (`RA920EX`)
+:   {url} scheint kein Obnam repository zu sein
+
+`ObnamIOError` (`RCE08AX`)
+:   I/O error: {filename}: {errno}: {strerror}
+
+`ObnamSystemError` (`RD5FA4X`)
+:   Systemfehler: {filename}: {errno}: {strerror}
+
+`RepositoryAccessError` (`RBF6DDX`)
+:   Repository existiert nicht oder es kann nicht drarauf zugegriffen werden: {error}
+
+`RepositoryChunkContentNotInIndexes` (`RA881CX`)
+:   Repository chunk index hat keinen Inhalt
+
+`RepositoryChunkDoesNotExist` (`R43272X`)
+:   Repository enthält chunk {chunk_id} nicht, der unter
+    {filename} sein sollte.
+
+`RepositoryChunkIndexesLockingFailed` (`R8F974X`)
+:   Repository chunk indexes are already locked
+
+`RepositoryChunkIndexesNotLocked` (`RE187FX`)
+:   Repository chunk indexes are not locked
+
+`RepositoryClientAlreadyExists` (`R41CE6X`)
+:   Repository client {client_name} existiert schon
+
+`RepositoryClientDoesNotExist` (`R24424X`)
+:   Repository client {client_name} existiert noch nicht
+
+`RepositoryClientGenerationUnfinished` (`R57207X`)
+:   Kann keine neue Generation für {client_name} anlegen: Vorherige ist noch nicht beendet
+    (Programmierfehler)
+
+`RepositoryClientHasNoGenerations` (`REFB32X`)
+:   Client {client_name} hat keine Generationen
+
+`RepositoryClientKeyNotAllowed` (`R1A025X`)
+:   Client {client_name} nutzt das Repository-Format {format}, das keinen
+    Schlüssel {key_name} für die Clients erlaubt.
+
+`RepositoryClientListLockingFailed` (`RB1048X`)
+:   Repository client list could not be locked
+
+`RepositoryClientListNotLocked` (`R6C1C8X`)
+:   Repository client list is not locked
+
+`RepositoryClientLockingFailed` (`R6EAF2X`)
+:   Repository client {client_name} could not be locked
+
+`RepositoryClientNotLocked` (`R0BE94X`)
+:   Repository client {client_name} is not locked
+
+`RepositoryFileDoesNotExistInGeneration` (`R3E151X`)
+:   Client {client_name}, Generation {genspec} enthält keine Datei {filename}
+
+`RepositoryFileKeyNotAllowed` (`R79699X`)
+:   Client {client_name} uses repository format {format} which does
+    not allow the key {key_name} to be use for files
+
+`RepositoryGenerationDoesNotExist` (`R0B15DX`)
+:   Kann angegebene Generation {gen_id!r} für Client
+    {client_name} nicht finden
+
+`RepositoryGenerationKeyNotAllowed` (`R6A098X`)
+:   Client {client_name} uses repository format {format} which does
+    not allow the key {key_name} to be used for generations
+
+`RepositorySettingMissingError` (`R01F56X`)
+:   Keine --repository-Einstellung gefunden. Setzen Sie die Option auf der Kommandozeile
+    oder in einer Konfigurationsdatei.
+
+`RestoreErrors` (`RD6259X`)
+:   Es traten Fehler bei der Wiederherstllung auf.
+
+    Die vorhergehende Fehlermeldung enthält Details.
+
+`RestoreTargetNotEmpty` (`R3E1C1X`)
+:   The restore --to directory ({to}) is not empty.
+
+`RootIsNotADirectory` (`RA4F35X`)
+:   {baseurl} ist kein Verzeichnis, aber ein VFS root muss ein Verzeichnis sein
+
+`SeparatorError` (`RB927BX`)
+:   Forget policy muss durch Kommata getrennt sein, siehe:
+    {position}: {policy}
+
+`SetMetadataError` (`R0FC21X`)
+:   {filename}: Couldn't set metadata {metadata}: {errno}: {strerror}
+
+`ShowFirstGenerationError` (`R91CA1X`)
+:   Can't show first generation. Use 'obnam ls' instead
+
+`SizeSyntaxError` (`R22E66X`)
+:   "{size}" is not a valid size
+
+`ToplevelIsFileError` (`R018FCX`)
+:   File at repository root: {filename}
+
+`URLSchemeAlreadyRegisteredError` (`R0F22CX`)
+:   VFS URL scheme {scheme} already registered
+
+`UnitNameError` (`R283A6X`)
+:   "{unit}" is not a valid unit
+
+`UnknownRepositoryFormat` (`RF4EFDX`)
+:   Unknown format {format} at {url}
+
+`UnknownRepositoryFormatWanted` (`RA7D64X`)
+:   Unknown format {format} requested
+
+`UnknownVFSError` (`R826A1X`)
+:   Unknown VFS type: {url}
+
+`WrongHostKeyError` (`R47416X`)
+:   Der SSH server {hostname} zeigte uns einen ungültigen öffentlichen Schlüssel.
+
+    Dies kann an einem veralteten host key in Ihrer "known hosts"-Datei
+    liegen. Sollte das so sein, benutzen Sie `ssh-key -R` um ihn zu entfernen.
+    Es könnte aber auch ein Zeichen dafür sein, daß Sie Opfer eines Man-in-the-middle
+    Angriffs werden. Seinen Sie vorsichtig.
+
+`WrongNumberOfGenerationSettingsError` (`R2FA37X`)
+:   Der `restore`-Befehl benötigt exakt eine Generation
+
+`WrongNumberOfGenerationsForDiffError` (`RA5942X`)
+:   Benötige eine oder zwei Generationen
+
+`WrongNumberOfGenerationsForVerify` (`R3B42AX`)
+:   verify must be given exactly one generation
+
+`WrongURLSchemeError` (`RB8E98X`)
+:   SftpFS used with non-sftp URL: {url}
+
