@@ -1,0 +1,10 @@
+Appendix: Error messages
+========================
+
+This appendix lists all Obnam error messages and their explanations.
+It is possible you'll see other error messages while running Obnam.
+These are not listed here, as Obnam doesn't know about them.
+
+The errors are listed twice: briefly, in order of their unique
+error, and then more fully, in alphabetical order.
+

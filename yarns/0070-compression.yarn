@@ -1,0 +1,66 @@
+Compressed repositories
+=======================
+
+Backup and restore with compression
+-----------------------------------
+
+Compressed backups should work just like normal ones, except with all
+the data written to the repository being compressed. We thus repeat a
+basic backup test, but with compression.
+
+    SCENARIO backup simple data using compression
+    GIVEN 100kB of new data in directory L
+    AND a manifest of L in M
+    AND user U sets configuration compress-with to deflate
+    WHEN user U backs up directory L to repository R
+    AND user U restores their latest generation in repository R into X
+    THEN L, restored to X, matches manifest M
+    AND user U can fsck the repository R
+
+If this works, everything else should work as well: by the time Obnam
+writes anything to the repository, it has lost its sparseness, or
+other special filesystem characteristics, and it's just B-tree nodes
+or chunk data.
+
+It should be possible to restore from a compressed repository, even
+without turning compression on. We continue the test scenario
+accordingly.
+
+    GIVEN user U sets configuration compress-with to none
+    WHEN user U restores their latest generation in repository R into Y
+    THEN L, restored to Y, matches manifest M
+    AND user U can fsck the repository R
+
+We would also like to turn compression on after not using it, without
+having to do any extra work. This requires a new scenario.
+
+    SCENARIO enable compression later
+    GIVEN 100kB of new data in directory L
+    WHEN user U backs up directory L to repository R
+
+Then enable compression, add some more data, and backup again. The
+result should now be verifiable.
+
+    GIVEN user U sets configuration compress-with to deflate
+    AND 100kB of new data in directory L
+    AND a manifest of L in M
+    WHEN user U backs up directory L to repository R
+    AND user U restores their latest generation in repository R into X
+    THEN L, restored to X, matches manifest M
+    AND user U can fsck the repository R
+
+Using both compression and encryption
+-------------------------------------
+
+We need to be able to combine compression with encryption. Let's do
+the test again, with new options.
+
+    SCENARIO backup simple data using compression and encryption
+    GIVEN 100kB of new data in directory L
+    AND a manifest of L in M
+    AND user U sets configuration compress-with to deflate
+    GIVEN user U uses encryption key "Test Key One" from test-data/keyring-1
+    WHEN user U backs up directory L to repository R
+    AND user U restores their latest generation in repository R into X
+    THEN L, restored to X, matches manifest M
+    AND user U can fsck the repository R

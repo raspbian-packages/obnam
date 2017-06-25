@@ -1,0 +1,188 @@
+Obnam, a backup program
+=======================
+
+Obnam is a backup program.
+
+
+Home page
+---------
+
+The Obnam home page is at <http://obnam.org/>, see there
+for more information.
+
+
+Installation
+------------
+
+The source tree contains packaging for Debian. Run `debuild -us -uc -i.git` to
+build an installation package.
+
+On other systems, using the `setup.py` file should work: run
+"python setup.py --help" for advice. If not, please report a bug.
+(I've only tested `setup.py` enough for to build the Debian package.)
+
+You need Python 2.6 or 2.7 (Python 3 is not yet supported). You also
+need to install my Python B-tree library, and some of my other
+libraries and tools, which you can get from:
+
+* <http://liw.fi/larch/>
+* <http://liw.fi/ttystatus/>
+* <http://liw.fi/coverage-test-runner/> (for automatic tests)
+* <http://liw.fi/tracing/>
+* <http://liw.fi/cliapp/>
+* <http://liw.fi/genbackupdata/>
+* <http://liw.fi/summain/>
+* <http://liw.fi/cmdtest/>
+* <http://liw.fi/seivot/> (for benchmarks)
+
+You also need third party libraries:
+
+* paramiko: <http://www.lag.net/paramiko/>
+
+See debian/control for the full set of build dependencies and runtime
+dependencies on a Debian system. (That set actually gets tested. The
+above list is maintained manually and may get out of date from time
+to time.)
+
+If you want to run obnam from the repository directory (rather than installing
+it), you need to do some setup.  Run `./check --unit-tests` for setup and
+to verify with unit tests or `./check --help` to setup without any tests.
+You'll need dev files for python and the Coverage Test Runner python module (on
+Debian, those are the python-dev and python-coverage-test-runner packages).
+
+Use
+---
+
+To get a quick help summary of options:
+
+    ./obnam --help
+
+To make a backup:
+
+    ./obnam backup --repository /tmp/mybackup $HOME
+
+For more information, see the manual page:
+
+    man -l obnam.1
+
+
+Hacking
+-------
+
+Obnam source code is stored in git for version control purposes;
+you can get a copy as follows:
+
+    git clone git://git.liw.fi/obnam
+
+The 'master' branch is the main development one. Any bug fixes and
+features should be developed in a dedicated branch, which gets merged
+to master when the changes are done and considered good.
+
+To build and run automatic tests:
+
+    ./check
+    ./check --unit-tests # unit tests only, no black box tests
+    ./check --network # requires ssh access to localhost
+
+`check` is a wrapper around `python setup.py`, but since using that
+takes several steps, the script makes things easier.
+
+You need my CoverageTestRunner to run tests, see above for where to get it.  A
+couple of scripts exist to run benchmarks and profiles:
+
+    ./metadata-speed 10000
+    ./obnam-benchmark --size=1m/100k --results /tmp/benchmark-results
+    viewprof /tmp/benchmark-results/*/*backup-0.prof
+    seivots-summary /tmp/benchmark-results/*/*.seivot | less -S
+
+There are two kinds of results: Python profiling output, and `.seivot`
+files.
+
+For the former, `viewprof` is a little helper script I wrote,
+around the Python pstats module.
+You can use your own, or get mine from extrautils
+(<http://liw.fi/extrautils/>). Running the benchmarks under profiling
+makes them a little slower (typically around 10% for me, when I've
+compared), but that's OK: the absolute numbers of the benchmarks are
+less important than the relative ones. It's nice to be able to look at
+the profiler output, if a benchmark is surprisingly slow, without
+having to re-run it.
+
+`seivots-summary` is a tool to display summaries of the measurements
+made during a benchmark run. `seivot` is the tool that makes the
+measurements. I typically save a number of benchmark results, so that
+I can see how my changes affect performance over time.
+
+If you make any changes, I welcome patches, either as plain diffs,
+`git format-patch --cover-letter` mails, or public repositories I can
+merge from.
+
+I would really appreciate if patches for new features and bug fixes
+would update the test suite and documentation as well.
+
+The code layout is roughly like this:
+
+    obnamlib/               # all the real code
+    obnamlib/plugins/       # the plugin code (see pluginmgr.py)
+    obnam                   # script to invoke obnam
+    _obnammodule.c          # wrapper around some system calls
+
+In obnamlib, every code module has a corresponding test module,
+and "make check" uses CoverageTestRunner to run them pairwise. For
+each pair, test coverage must be 100% or the test will fail.
+Mark statements that should not be included in coverage test with
+"# pragma: no cover", if you really, really can't write a test.
+without-tests lists modules that have no test modules.
+
+Feedback
+--------
+
+I welcome bug fixes, enhancements, bug reports, suggestions,
+requests, and other feedback. I prefer e-mail the mailing list: see
+<http://obnam.org/contact/> for details.
+
+It would be helpful if you can run `make clean check` before submitting
+a patch, but it is not strictly required.
+
+Note that to run the test suite you will need the following installed:
+
+* pep8
+* coverage
+* CoverageTestRunner ( http://liw.fi/coverage-test-runner/ )
+  (python-coverage-test-runner on Debian)
+
+
+Legal stuff
+-----------
+
+Most of the code is written by Lars Wirzenius. (Please provide patches
+so that can change.)
+
+This entire work is covered by the GNU General Public
+License, version 3 or later.
+
+> Copyright 2010-2015  Lars Wirzenius
+> 
+> This program is free software: you can redistribute it and/or modify
+> it under the terms of the GNU General Public License as published by
+> the Free Software Foundation, either version 3 of the License, or
+> (at your option) any later version.
+> 
+> This program is distributed in the hope that it will be useful,
+> but WITHOUT ANY WARRANTY; without even the implied warranty of
+> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> GNU General Public License for more details.
+> 
+> You should have received a copy of the GNU General Public License
+> along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+A copy of the GPL is included in the file `COPYING` in the source tree.
+
+The manual (all the contents of the `manual` subdirectory) is
+additionally licensed under a Creative Commons Attribution 4.0
+International License. You can choose whether to use the GPL or the CC
+license for the manual.
+
+A copy of the Creative Commons license is included in the file
+`CC-BY-SA-4.0.txt` in the source tree, and can be viewed online
+at <http://creativecommons.org/licenses/by-sa/4.0/legalcode>.

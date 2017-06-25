@@ -1,0 +1,181 @@
+Participating in Obnam development
+==================================
+
+The Obnam project is quite small, as far as software projects go.
+There is one main developer, plus a few others who sometimes help out.
+It would be nice to have more people involved, and this chapter is an
+introduction for that.
+
+It is a common misunderstanding that only code matters in a software
+project. On the contrary, without a number of other things, code is
+useless, particularly so in a free software project, including Obnam.
+Examples of necessary things in almost any serious software project:
+
+* writing and updating documentation, which includes manuals and
+  websites
+* translating documentation, and the software's user interface
+* providing support to users with questions or problems
+* reporting actionable bugs
+* processing bug reports: asking for clarifications, reproducing the
+  reported problem, finding the cause of the problem, and developing a
+  suitable fix
+* porting the software to various platforms, including different
+  operating systems, different versions of said operating systems,
+  different versions of the languages and libraries the software uses,
+  different hardware, etc
+* quality assurance: developing and performing manual and automated
+  tests and benchmarks, and analysing results
+* hosting and operating web sites, mailing lists, IRC channels, other
+  communication channels
+* handling project governance, which includes dealing with conflicts
+  between people
+* managing the project in general, including making sure things don't
+  stall
+* finally, writing the code itself, which is a necessary, but not
+  sufficient part of having a project that people other than the
+  developers can use it
+
+This list is insufficient; additions are welcome. See the rest of this
+chapter for suggestions on how to contribute to the list.
+
+
+Helping support users
+---------------------
+
+Perhaps the easiest way to participate in the project is to help
+support other users of the software. This is easy, and doesn't
+necessarily require more than being able to use the software oneself.
+Yet it is quite valuable, as it frees others from doing that. Even
+with the highest quality, easiest to use software, there's always some
+need for user support:
+
+* Code can be wrong, and a user may experience this. Analysing the
+  situation and isolating the bug is an important part of the software
+  development process.
+
+* Documentation can be wrong, or out of date, or written in
+  anticipation of a feature that doesn't exist yet.
+
+* Some people have misunderstandings, due to whatever reason, which
+  leads them to have problems when using the software. Figuring out
+  what the actual problem and its cause are can be a time consuming
+  process, but often does not require any special skills, except for
+  patience and a willingness to ask a lot of questions.
+
+In the Obnam project, the best way to help out with this is to
+subscribe to the `obnam-support@obnam.org` mailing list or join the
+`#obnam` (irc.oftc.net) IRC channel, and start answering questions.
+
+It's OK to not be an expert. Helping others is a great way to learn.
+If you make it clear you're not an expert, but are trying to help
+anyway, usually makes others appreciate your help even more.
+
+Some suggestions on doing support work:
+
+* Try to understand what the person needing help is actually trying to
+  achieve, rather than answering their literal question. Better yet,
+  do both.
+
+* You don't need to have the solution to respond. A quick, but
+  incomplete answer that nevertheless moves the discussion forward is
+  helpful. Even if you don't know the correct answer, it's good to ask
+  a question that results in the person needing help providing more
+  information, or finding the solution themselves, or inspires someone
+  else to discover the solution,
+
+* Always be helpful and polite. Never respond with things such as
+  "read the fine manual" (or RTFM for short). It's OK to say that the
+  answer is in the manual, but then provide a link, and possibly also
+  a quote.
+
+* People who need help are often frustrated, and sometimes desperate,
+  because they've tried and tried to solve the problem on their own,
+  but have failed. This can leak through their messages. Ignore it,
+  unless they actually become impolite, at which point its probably
+  best to escalate the situation. Avoid getting into a quarrel about
+  who's right or who said what and what did they mean by it.
+
+* It's better to not respond at all, than respond while irritated,
+  annoyed, or angry. It's more important for the project to maintain a
+  polite and helpful atmosphere in the long run than to solve any
+  current technical problem.
+
+In short, if you do your best to be polite, friendly, and helpful, go
+ahead and respond.
+
+
+Writing and updating documentation
+----------------------------------
+
+The project has various kinds of documentation.
+
+* The `obnam.org` website.
+* The manual page.
+* The manual (which is what you're reading now).
+* Various blog posts around the web.
+
+Writing documentation is fairly easy. Updating it takes a bit more
+effort, since it requires reviewing existing documentation to make
+sure it's up to date. The main goals of Obnam documentation are:
+
+* Accuracy.
+* Clarity.
+* Completeness.
+* A bit of dry humour in places.
+
+Any help you can give here is most welcome.
+
+* Read through existing documentation.
+* If you find anything that's wrong, inaccurate, incomplete, missing,
+  or unclear, send a note to the developer mailing list.
+* If you can include a new wording, all the better. It's not required.
+* If you can provide an actual patch, perfect, since it makes it
+  easiest to incorporate your suggestion. Again, it's not required.
+
+You don't need to be a good writer. As part of the process, others
+will review what you send, and will point out anything they feel can
+be improved. For example, suppose you notice that a paragraph in this
+manual is unclear, but you don't know what it actually should say. If
+you send a mail saying this, others can then come up with a better
+wording.
+
+Translating documentation
+-------------------------
+
+The Obnam manual and manual page are written in English, and have been
+translated to German. More languages are most welcome.
+
+The author of this manual is not particularly familiar with the
+process of translation, and so wishes someone else would fill in this
+section.
+
+The Obnam user interface is not currently translatable, and making it
+so will require code changes. Helping make those code changes would be
+nice.
+
+Developing the code
+-------------------
+
+Assuming you already know how to program, it's fairly straightforward
+to work on the Obnam code base. At least it's meant to be so: if you
+have trouble, please ask and point out what's unclear or wrong.
+
+Check out the source from the git server, and read the `README` file
+for details on how to get started, and how to run the automated test
+suite, and how to send patches. See the website for some development
+documentation, including explanations of the on-disk data structures.
+
+Code changes that are not very trivial should be sent in a form that
+can be handled by git. This can be actual patches sent to the mailing
+list, or a URL from which changes can be merged.
+
+Project governance
+------------------
+
+The Obnam project has a very informal form of governance: the founder
+of the project, Lars Wirzenius, has all the power, and everyone else
+has no power. As the project grows, this will change.
+
+If there's a social problem somewhere, for example someone is
+misbehaving, it's best to report it to Lars directly. If Lars is the
+problem, it's best to call him out directly.

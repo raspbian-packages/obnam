@@ -1,0 +1,19 @@
+The backup repository internals
+===============================
+
+This chapter describes what the Obnam backup repository looks like.
+Unless you're interested in that, you can skip that entirely.
+
+For now, look at the Obnam website at <http://obnam.org/development/>.
+
+
+Repository file permissions
+---------------------------
+
+Obnam sets the permissions of all files it creates in the repository
+such that only the owner of the files can read or write them.
+(Technically, 0600 for files, 0700 for directories.)
+
+This is to prevent backups from leaking because someone else has read
+access to the repository. There is no setting in Obnam to control
+this.
